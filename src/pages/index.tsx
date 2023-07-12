@@ -1,5 +1,6 @@
 import { useGotchisQuery } from "@/graphql/core/__generated__/types";
 import { useGotchisSvgQuery } from "@/graphql/svg/__generated__/types";
+import Link from "next/link";
 
 const Home = () => {
   // const gotchi = useGotchiQuery({ variables: { id: "24091" } });
@@ -26,12 +27,12 @@ const Home = () => {
       </div>
 
       <div className="flex flex-row justify-center gap-x-10 pt-10">
-        <button
-          type="button"
+        <Link
+          href={"/otc/new"}
           className="rounded-md bg-gotchi-500 px-5 py-4 text-2xl font-semibold text-white shadow-sm hover:bg-gotchi-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gotchi-500"
         >
           Create an OTC deal
-        </button>
+        </Link>
         <button
           type="button"
           className="rounded-md bg-gotchi-500 px-5 py-4 text-2xl font-semibold text-white shadow-sm hover:bg-gotchi-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gotchi-500"
