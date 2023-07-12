@@ -8,6 +8,7 @@ import {
 import "./globals.css";
 import type { AppProps } from "next/app";
 import React from "react";
+import { Layout } from "./layout";
 
 function FallbackComponent() {
   return <div>Une erreur est survenue</div>;
@@ -20,11 +21,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const svgLink = new HttpLink({
     uri: "https://api.thegraph.com/subgraphs/name/aavegotchi/aavegotchi-svg",
-  });
-
-  const clientCore = new ApolloClient({
-    uri: "https://subgraph.satsuma-prod.com/tWYl5n5y04oz/aavegotchi/aavegotchi-core-matic/api",
-    cache: new InMemoryCache(),
   });
 
   const client = new ApolloClient({
@@ -40,7 +36,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ApolloProvider client={client}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ApolloProvider>
   );
 }
