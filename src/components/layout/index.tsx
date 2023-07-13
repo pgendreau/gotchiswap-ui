@@ -1,26 +1,17 @@
 import { PropsWithChildren } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Header } from "./sections/Header";
+import { Footer } from "./sections/Footer";
 
 export const Layout = (props: PropsWithChildren) => {
   return (
-    <div className="flex flex-col h-screen justify-between bg-purple-950  text-white">
-      <div className="flex justify-center place-items-center py-10 gap-x-10 bg-gotchi-500">
-        <Link href="/">
-          <Image src="/images/logo.png" alt="logo" width={120} height={120} />
-        </Link>
-        <Link href="/">
-          <div className="text-7xl font-gotchi font-medium text-center text-white">
-            gotchiswap
-          </div>
-        </Link>
+    <div className="flex flex-col h-screen justify-between bg-purple-950  text-white font-katin font-medium">
+      <Header />
+      <div className="container mx-auto mb-auto md:pt-20 pt-10">
+        <div className="mx-5">{props.children}</div>
       </div>
-      <div className="container mx-auto mb-auto pt-20">{props.children}</div>
-      <div className="container mx-auto">
-        <div className="text-center text-2xl font-gotchi font-medium px-5 pt-20 pb-5">
-          made by pg & fifoooo
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 };
