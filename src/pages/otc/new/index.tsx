@@ -4,6 +4,7 @@ import { useState } from "react";
 import { GotchiPicker } from "@/components/specifics/pickers/GotchiPicker";
 import { aavegotchi } from "@/graphql/core/fragments/fragments";
 import { GotchiFieldsFragment } from "@/graphql/core/__generated__/graphql";
+import { OtcForm } from "@/components/specifics/forms/OtcForm";
 
 
 
@@ -17,12 +18,11 @@ const New = () => {
   return (
     <div className="flex flex-col justify-center gap-y-5">
       <div className="text-2xl">
-        <p>To create an OTC deal, just pick the asset you want to sell</p>
-        <p>Then enters a price (in GHST)</p>
-        <p>
-          And finally enter the address of the wallet you want to sold your
-          asset to
+        <p>To create an OTC deal, just pick the asset you want to sell. Then enters a price (in GHST). And finally enter the address of the wallet you want to sold your asset to
         </p>
+      </div>
+      <div>
+        <OtcForm selectedAsset={selectedAsset} />
       </div>
       <div>
         <GotchiPicker

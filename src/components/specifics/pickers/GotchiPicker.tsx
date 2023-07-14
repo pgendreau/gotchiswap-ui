@@ -8,8 +8,6 @@ import { classNames } from "@/helpers/tools";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { useAccount } from "wagmi";
 import { GotchiCard } from "../cards/GotchiCard";
-import { GOTCHI_FIELDS } from "@/graphql/core/fragments/fragments";
-import { useFragment } from "@/graphql/core/__generated__";
 
 type GotchiPickerProps = {
   selectedAsset: GotchiFieldsFragment | null;
