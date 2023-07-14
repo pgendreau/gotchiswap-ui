@@ -40,25 +40,6 @@ const Home = () => {
           See my deals
         </button>
       </div>
-
-      {/* <ul>
-        {gotchis.data?.aavegotchis?.map((gotchi) => {
-          return (
-            <li key={gotchi?.id}>
-              <div className="font-kanit">{gotchi?.gotchiId}</div>
-              <div
-                className="w-20 h-20"
-                dangerouslySetInnerHTML={{
-                  __html:
-                    svgs.data?.aavegotchis?.find(
-                      (svg) => svg?.id === gotchi?.id
-                    )?.svg ?? "empty",
-                }}
-              />
-            </li>
-          );
-        })}
-      </ul> */}
     </>
   );
 };

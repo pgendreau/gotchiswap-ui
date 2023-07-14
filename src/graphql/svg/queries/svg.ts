@@ -1,12 +1,11 @@
 import { gql } from "@apollo/client";
+import { SVG_FIELDS } from "../fragments/fragments";
 
-export const GET_SVGS = gql`
-query gotchisSvg($ids: [ID!]){
-	aavegotchis(where:{
-    id_in: $ids
-  }) {
-    id
-    svg
+export const GET_SVG = gql`
+${SVG_FIELDS}
+query gotchiSvg($id: ID!){
+	aavegotchi(id: $id) {
+        ...SvgFields
   }
 }
 `
