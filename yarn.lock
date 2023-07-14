@@ -674,7 +674,7 @@
     yaml "^1.10.0"
     yargs "^17.0.0"
 
-"@graphql-codegen/client-preset@4.0.1":
+"@graphql-codegen/client-preset@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/client-preset/-/client-preset-4.0.1.tgz#6d9883525511ebbd6deaacdccf2c4673fad3263f"
   integrity sha512-8kt8z1JK4CGbBb+oedSCyHENNxh8UHdEFU8sBCtN4QpKsfmsEXhHHeJCTRPVbQKtEZyfVuBqf89DzuSNLs0DFw==

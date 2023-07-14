@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+/* eslint-disable */
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -7,7 +7,6 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
-const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -18,6 +17,10 @@ export type Scalars = {
   BigDecimal: { input: any; output: any; }
   BigInt: { input: any; output: any; }
   Bytes: { input: any; output: any; }
+  /**
+   * 8 bytes signed integer
+   *
+   */
   Int8: { input: any; output: any; }
 };
 
@@ -245,90 +248,28 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type SvgFieldsFragment = { __typename?: 'Aavegotchi', id: string, svg: string } & { ' $fragmentName'?: 'SvgFieldsFragment' };
+
 export type GotchiSvgQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GotchiSvgQuery = { __typename?: 'Query', aavegotchi?: { __typename?: 'Aavegotchi', id: string, svg: string } | null };
+export type GotchiSvgQuery = { __typename?: 'Query', aavegotchi?: (
+    { __typename?: 'Aavegotchi' }
+    & { ' $fragmentRefs'?: { 'SvgFieldsFragment': SvgFieldsFragment } }
+  ) | null };
 
 export type GotchisSvgQueryVariables = Exact<{
   ids?: InputMaybe<Array<Scalars['ID']['input']> | Scalars['ID']['input']>;
 }>;
 
 
-export type GotchisSvgQuery = { __typename?: 'Query', aavegotchis: Array<{ __typename?: 'Aavegotchi', id: string, svg: string }> };
+export type GotchisSvgQuery = { __typename?: 'Query', aavegotchis: Array<(
+    { __typename?: 'Aavegotchi' }
+    & { ' $fragmentRefs'?: { 'SvgFieldsFragment': SvgFieldsFragment } }
+  )> };
 
-
-export const GotchiSvgDocument = gql`
-    query gotchiSvg($id: ID!) {
-  aavegotchi(id: $id) {
-    id
-    svg
-  }
-}
-    `;
-
-/**
- * __useGotchiSvgQuery__
- *
- * To run a query within a React component, call `useGotchiSvgQuery` and pass it any options that fit your needs.
- * When your component renders, `useGotchiSvgQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGotchiSvgQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGotchiSvgQuery(baseOptions: Apollo.QueryHookOptions<GotchiSvgQuery, GotchiSvgQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GotchiSvgQuery, GotchiSvgQueryVariables>(GotchiSvgDocument, options);
-      }
-export function useGotchiSvgLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GotchiSvgQuery, GotchiSvgQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GotchiSvgQuery, GotchiSvgQueryVariables>(GotchiSvgDocument, options);
-        }
-export type GotchiSvgQueryHookResult = ReturnType<typeof useGotchiSvgQuery>;
-export type GotchiSvgLazyQueryHookResult = ReturnType<typeof useGotchiSvgLazyQuery>;
-export type GotchiSvgQueryResult = Apollo.QueryResult<GotchiSvgQuery, GotchiSvgQueryVariables>;
-export const GotchisSvgDocument = gql`
-    query gotchisSvg($ids: [ID!]) {
-  aavegotchis(where: {id_in: $ids}) {
-    id
-    svg
-  }
-}
-    `;
-
-/**
- * __useGotchisSvgQuery__
- *
- * To run a query within a React component, call `useGotchisSvgQuery` and pass it any options that fit your needs.
- * When your component renders, `useGotchisSvgQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGotchisSvgQuery({
- *   variables: {
- *      ids: // value for 'ids'
- *   },
- * });
- */
-export function useGotchisSvgQuery(baseOptions?: Apollo.QueryHookOptions<GotchisSvgQuery, GotchisSvgQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GotchisSvgQuery, GotchisSvgQueryVariables>(GotchisSvgDocument, options);
-      }
-export function useGotchisSvgLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GotchisSvgQuery, GotchisSvgQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GotchisSvgQuery, GotchisSvgQueryVariables>(GotchisSvgDocument, options);
-        }
-export type GotchisSvgQueryHookResult = ReturnType<typeof useGotchisSvgQuery>;
-export type GotchisSvgLazyQueryHookResult = ReturnType<typeof useGotchisSvgLazyQuery>;
-export type GotchisSvgQueryResult = Apollo.QueryResult<GotchisSvgQuery, GotchisSvgQueryVariables>;
+export const SvgFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"SvgFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Aavegotchi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"svg"}}]}}]} as unknown as DocumentNode<SvgFieldsFragment, unknown>;
+export const GotchiSvgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"gotchiSvg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aavegotchi"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"SvgFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"SvgFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Aavegotchi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"svg"}}]}}]} as unknown as DocumentNode<GotchiSvgQuery, GotchiSvgQueryVariables>;
+export const GotchisSvgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"gotchisSvg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ids"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aavegotchis"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ids"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"SvgFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"SvgFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Aavegotchi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"svg"}}]}}]} as unknown as DocumentNode<GotchisSvgQuery, GotchisSvgQueryVariables>;

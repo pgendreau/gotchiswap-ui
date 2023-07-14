@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+/* eslint-disable */
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -7,7 +7,6 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
-const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -3647,106 +3646,28 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
-export type GotchiFieldsFragment = { __typename?: 'Aavegotchi', id: string, gotchiId: any, name: string, status: any, baseRarityScore: any, modifiedRarityScore: any, kinship: any, locked: boolean, equippedWearables: Array<number>, numericTraits: Array<number>, modifiedNumericTraits: Array<number>, level: any, experience: any };
+export type GotchiFieldsFragment = { __typename?: 'Aavegotchi', id: string, gotchiId: any, name: string, status: any, baseRarityScore: any, modifiedRarityScore: any, kinship: any, locked: boolean, equippedWearables: Array<number>, numericTraits: Array<number>, modifiedNumericTraits: Array<number>, level: any, experience: any } & { ' $fragmentName'?: 'GotchiFieldsFragment' };
 
 export type GotchiQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GotchiQuery = { __typename?: 'Query', aavegotchi?: { __typename?: 'Aavegotchi', id: string, gotchiId: any, name: string, status: any, baseRarityScore: any, modifiedRarityScore: any, kinship: any, locked: boolean, equippedWearables: Array<number>, numericTraits: Array<number>, modifiedNumericTraits: Array<number>, level: any, experience: any } | null };
+export type GotchiQuery = { __typename?: 'Query', aavegotchi?: (
+    { __typename?: 'Aavegotchi' }
+    & { ' $fragmentRefs'?: { 'GotchiFieldsFragment': GotchiFieldsFragment } }
+  ) | null };
 
 export type GotchisQueryVariables = Exact<{
   owner: Scalars['String']['input'];
 }>;
 
 
-export type GotchisQuery = { __typename?: 'Query', aavegotchis: Array<{ __typename?: 'Aavegotchi', id: string, gotchiId: any, name: string, status: any, baseRarityScore: any, modifiedRarityScore: any, kinship: any, locked: boolean, equippedWearables: Array<number>, numericTraits: Array<number>, modifiedNumericTraits: Array<number>, level: any, experience: any }> };
+export type GotchisQuery = { __typename?: 'Query', aavegotchis: Array<(
+    { __typename?: 'Aavegotchi' }
+    & { ' $fragmentRefs'?: { 'GotchiFieldsFragment': GotchiFieldsFragment } }
+  )> };
 
-export const GotchiFieldsFragmentDoc = gql`
-    fragment GotchiFields on Aavegotchi {
-  id
-  gotchiId
-  name
-  status
-  baseRarityScore
-  modifiedRarityScore
-  kinship
-  locked
-  equippedWearables
-  numericTraits
-  modifiedNumericTraits
-  level
-  experience
-}
-    `;
-export const GotchiDocument = gql`
-    query gotchi($id: ID!) {
-  aavegotchi(id: $id) {
-    ...GotchiFields
-  }
-}
-    ${GotchiFieldsFragmentDoc}`;
-
-/**
- * __useGotchiQuery__
- *
- * To run a query within a React component, call `useGotchiQuery` and pass it any options that fit your needs.
- * When your component renders, `useGotchiQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGotchiQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGotchiQuery(baseOptions: Apollo.QueryHookOptions<GotchiQuery, GotchiQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GotchiQuery, GotchiQueryVariables>(GotchiDocument, options);
-      }
-export function useGotchiLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GotchiQuery, GotchiQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GotchiQuery, GotchiQueryVariables>(GotchiDocument, options);
-        }
-export type GotchiQueryHookResult = ReturnType<typeof useGotchiQuery>;
-export type GotchiLazyQueryHookResult = ReturnType<typeof useGotchiLazyQuery>;
-export type GotchiQueryResult = Apollo.QueryResult<GotchiQuery, GotchiQueryVariables>;
-export const GotchisDocument = gql`
-    query gotchis($owner: String!) {
-  aavegotchis(where: {originalOwner: $owner}) {
-    ...GotchiFields
-  }
-}
-    ${GotchiFieldsFragmentDoc}`;
-
-/**
- * __useGotchisQuery__
- *
- * To run a query within a React component, call `useGotchisQuery` and pass it any options that fit your needs.
- * When your component renders, `useGotchisQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGotchisQuery({
- *   variables: {
- *      owner: // value for 'owner'
- *   },
- * });
- */
-export function useGotchisQuery(baseOptions: Apollo.QueryHookOptions<GotchisQuery, GotchisQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GotchisQuery, GotchisQueryVariables>(GotchisDocument, options);
-      }
-export function useGotchisLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GotchisQuery, GotchisQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GotchisQuery, GotchisQueryVariables>(GotchisDocument, options);
-        }
-export type GotchisQueryHookResult = ReturnType<typeof useGotchisQuery>;
-export type GotchisLazyQueryHookResult = ReturnType<typeof useGotchisLazyQuery>;
-export type GotchisQueryResult = Apollo.QueryResult<GotchisQuery, GotchisQueryVariables>;
+export const GotchiFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"GotchiFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Aavegotchi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"gotchiId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"baseRarityScore"}},{"kind":"Field","name":{"kind":"Name","value":"modifiedRarityScore"}},{"kind":"Field","name":{"kind":"Name","value":"kinship"}},{"kind":"Field","name":{"kind":"Name","value":"locked"}},{"kind":"Field","name":{"kind":"Name","value":"equippedWearables"}},{"kind":"Field","name":{"kind":"Name","value":"numericTraits"}},{"kind":"Field","name":{"kind":"Name","value":"modifiedNumericTraits"}},{"kind":"Field","name":{"kind":"Name","value":"level"}},{"kind":"Field","name":{"kind":"Name","value":"experience"}}]}}]} as unknown as DocumentNode<GotchiFieldsFragment, unknown>;
+export const GotchiDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"gotchi"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aavegotchi"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"GotchiFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"GotchiFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Aavegotchi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"gotchiId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"baseRarityScore"}},{"kind":"Field","name":{"kind":"Name","value":"modifiedRarityScore"}},{"kind":"Field","name":{"kind":"Name","value":"kinship"}},{"kind":"Field","name":{"kind":"Name","value":"locked"}},{"kind":"Field","name":{"kind":"Name","value":"equippedWearables"}},{"kind":"Field","name":{"kind":"Name","value":"numericTraits"}},{"kind":"Field","name":{"kind":"Name","value":"modifiedNumericTraits"}},{"kind":"Field","name":{"kind":"Name","value":"level"}},{"kind":"Field","name":{"kind":"Name","value":"experience"}}]}}]} as unknown as DocumentNode<GotchiQuery, GotchiQueryVariables>;
+export const GotchisDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"gotchis"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"owner"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aavegotchis"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"originalOwner"},"value":{"kind":"Variable","name":{"kind":"Name","value":"owner"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"GotchiFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"GotchiFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Aavegotchi"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"gotchiId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"baseRarityScore"}},{"kind":"Field","name":{"kind":"Name","value":"modifiedRarityScore"}},{"kind":"Field","name":{"kind":"Name","value":"kinship"}},{"kind":"Field","name":{"kind":"Name","value":"locked"}},{"kind":"Field","name":{"kind":"Name","value":"equippedWearables"}},{"kind":"Field","name":{"kind":"Name","value":"numericTraits"}},{"kind":"Field","name":{"kind":"Name","value":"modifiedNumericTraits"}},{"kind":"Field","name":{"kind":"Name","value":"level"}},{"kind":"Field","name":{"kind":"Name","value":"experience"}}]}}]} as unknown as DocumentNode<GotchisQuery, GotchisQueryVariables>;
