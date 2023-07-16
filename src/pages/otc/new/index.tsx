@@ -1,19 +1,12 @@
-import { PleaseConnect } from "@/components/specifics/wallet/PleaseConnect";
-import { useAccount } from "wagmi";
 import { useState } from "react";
 import { GotchiPicker } from "@/components/specifics/pickers/GotchiPicker";
-import { aavegotchi } from "@/graphql/core/fragments/fragments";
 import { GotchiFieldsFragment } from "@/graphql/core/__generated__/graphql";
 import { OtcForm } from "@/components/specifics/forms/OtcForm";
 
 
 
 const New = () => {
-  const { address, isConnected } = useAccount();
   const [selectedAsset, setSelectedAsset] = useState<GotchiFieldsFragment | null>(null);
-
-
-  if (!isConnected || !address) return <PleaseConnect />;
   
   return (
     <div className="flex flex-col justify-center gap-y-5">

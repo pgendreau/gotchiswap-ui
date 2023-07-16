@@ -1,4 +1,3 @@
-import { gql } from '@apollo/client';
 import { FragmentType, graphql } from '../__generated__';
 
 export const GOTCHI_FIELDS = graphql(`

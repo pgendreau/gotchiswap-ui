@@ -1,3 +1,5 @@
+'use client';
+
 import { ConnectKitButton } from 'connectkit'
 import { useAccount } from 'wagmi'
 import { Connected } from './Connected'
