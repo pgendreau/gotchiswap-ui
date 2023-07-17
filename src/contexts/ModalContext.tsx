@@ -1,4 +1,3 @@
-import { WriteContractResult } from "@wagmi/core";
 import {
   PropsWithChildren,
   createContext,

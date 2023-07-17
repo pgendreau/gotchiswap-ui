@@ -3,11 +3,11 @@ import { Formik, Field, Form, FormikHelpers } from "formik";
 import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
 import { aavegotchiAbi } from "@/abis/aavegotchi";
 import { convertAddressType } from "@/helpers/tools";
-import { useAccount, useContractRead, useContractWrite } from "wagmi";
+import { useAccount, usePrepareContractWrite, useContractRead, useContractWrite } from "wagmi";
 import ClientOnly from "@/components/generics/nextShit/ClientOnly";
 import { ConnectKitButton } from "connectkit";
 import { TxContext, TxContextType } from "@/contexts/TxContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModalContext } from "@/contexts/ModalContext";
 
 type OtcFormProps = {
@@ -22,8 +22,8 @@ type OtcFormValues = {
 export const OtcForm = (props: OtcFormProps) => {
   const txCtx = useContext(TxContext);
   const modalCtx = useContext(ModalContext);
-
   const { address, isConnected } = useAccount();
+  const [submitted, setSubmitted] = useState(false);
 
   const checkApproval = async (gotchiId: string): Promise<Boolean> => {
     const txContextVar: TxContextType = {
@@ -73,7 +73,7 @@ export const OtcForm = (props: OtcFormProps) => {
         ],
       }); */
 
-      const { request } = await prepareWriteContract({
+      const { config } = usePrepareContractWrite({
         address: convertAddressType(
           process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
         ),
@@ -83,6 +83,17 @@ export const OtcForm = (props: OtcFormProps) => {
           [gotchiId],
         ],
       });
+
+      // const { request } = await prepareWriteContract({
+      //   address: convertAddressType(
+      //     process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
+      //   ),
+      //   abi: aavegotchiAbi,
+      //   functionName: "interact",
+      //   args: [
+      //     [gotchiId],
+      //   ],
+      // });
 
       const txContextVar2: TxContextType = {
         error: null,
