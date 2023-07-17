@@ -25,6 +25,9 @@ const Home = () => {
           to trade assets in an OTC fashion
         </p>
       </div>
+      {/* <div className="font-gotchi font-medium text-8xl pt-10 text-black bg-white">
+        Y
+      </div> */}
 
       <div className="flex flex-row justify-center gap-x-10 pt-10">
         <Link
