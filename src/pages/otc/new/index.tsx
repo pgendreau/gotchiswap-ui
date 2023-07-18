@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GotchiPicker } from "@/components/specifics/pickers/GotchiPicker";
 import { GotchiFieldsFragment } from "@/graphql/core/__generated__/graphql";
-import { OtcForm2 } from "@/components/specifics/forms/OtcForm2";
+import { OtcForm } from "@/components/specifics/forms/Otc/OtcForm";
 
 const New = () => {
   const [selectedAsset, setSelectedAsset] =
@@ -18,7 +18,7 @@ const New = () => {
         </p>
       </div>
       <div>
-        <OtcForm2
+        <OtcForm
           selectedAsset={selectedAsset}
           setEnablePicker={setEnablePicker}
         />

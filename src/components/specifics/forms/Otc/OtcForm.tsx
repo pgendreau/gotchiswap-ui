@@ -1,51 +1,31 @@
 import { GotchiFieldsFragment } from "@/graphql/core/__generated__/graphql";
-import { Formik, Field, Form, FormikHelpers } from "formik";
-import { readContract, prepareWriteContract, writeContract } from "@wagmi/core";
-import { aavegotchiAbi } from "@/abis/aavegotchi";
-import { convertAddressType } from "@/helpers/tools";
 import {
   useAccount,
-  usePrepareContractWrite,
-  useContractRead,
-  useContractWrite,
 } from "wagmi";
 import ClientOnly from "@/components/generics/nextShit/ClientOnly";
 import { TxContext, TxContextType } from "@/contexts/TxContext";
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { ModalContext } from "@/contexts/ModalContext";
 import { Web3Button } from "@web3modal/react";
-import { CheckApproval } from "../transactions/CheckApproval";
 import { OtcButton } from "./OtcButton";
 
 type OtcFormProps = {
   selectedAsset: GotchiFieldsFragment | null;
   setEnablePicker: Dispatch<SetStateAction<boolean>>;
-};
+}; 
 
 type OtcFormValues = {
   price: number;
   address: string;
 };
 
-export const OtcForm2 = (props: OtcFormProps) => {
+export const OtcForm = (props: OtcFormProps) => {
   const txCtx = useContext(TxContext);
   const modalCtx = useContext(ModalContext);
   const { address, isConnected } = useAccount();
   const [submitted, setSubmitted] = useState(false);
   const [targetWallet, setTargetWallet] = useState("");
   const [price, setPrice] = useState(0);
-
-  const handleSubmit = async (
-    values: OtcFormValues,
-    { setSubmitting }: FormikHelpers<OtcFormValues>
-  ) => {
-    if (!props.selectedAsset?.id) {
-      console.log("no asset selected");
-      return;
-    }
-    props.setEnablePicker(false);
-    setSubmitted(true);
-  };
 
   return (
     <>
