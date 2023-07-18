@@ -12,6 +12,7 @@ import { GotchiCard } from "../cards/GotchiCard";
 type GotchiPickerProps = {
   selectedAsset: GotchiFieldsFragment | null;
   setSelectedAsset: Dispatch<SetStateAction<GotchiFieldsFragment | null>>;
+  enablePicker: boolean; 
 };
 
 export const GotchiPicker = (props: GotchiPickerProps) => {
@@ -34,7 +35,7 @@ export const GotchiPicker = (props: GotchiPickerProps) => {
           id={gotchi.id}
           key={gotchi.id}
           onClick={() =>
-            props.setSelectedAsset(gotchi)
+            props.enablePicker && props.setSelectedAsset(gotchi)
           }
           className={classNames(
             props.selectedAsset?.id === gotchi.id

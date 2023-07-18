@@ -15,10 +15,11 @@ import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { ModalContext } from "@/contexts/ModalContext";
 import { Web3Button } from "@web3modal/react";
 import { CheckApproval } from "../transactions/CheckApproval";
+import { OtcButton } from "./OtcButton";
 
 type OtcFormProps = {
   selectedAsset: GotchiFieldsFragment | null;
-  setEnablePicker: Dispatch<SetStateAction<boolean>>
+  setEnablePicker: Dispatch<SetStateAction<boolean>>;
 };
 
 type OtcFormValues = {
@@ -26,11 +27,13 @@ type OtcFormValues = {
   address: string;
 };
 
-export const OtcForm = (props: OtcFormProps) => {
+export const OtcForm2 = (props: OtcFormProps) => {
   const txCtx = useContext(TxContext);
   const modalCtx = useContext(ModalContext);
   const { address, isConnected } = useAccount();
-  const [submitted, setSubmitted] = useState(false); 
+  const [submitted, setSubmitted] = useState(false);
+  const [targetWallet, setTargetWallet] = useState("");
+  const [price, setPrice] = useState(0);
 
   const handleSubmit = async (
     values: OtcFormValues,
@@ -42,66 +45,46 @@ export const OtcForm = (props: OtcFormProps) => {
     }
     props.setEnablePicker(false);
     setSubmitted(true);
-
-    
   };
 
   return (
     <>
-      <Formik
-        initialValues={{
-          price: 0,
-          address: "",
-        }}
-        onSubmit={handleSubmit}
-      >
-        <Form>
-          <div className="flex flex-col lg:flex-row justify-center place-items-center gap-y-2 lg:gap-x-10 leading-8">
-            <div className="flex flex-col md:flex-row justify-center gap-y-2 md:gap-x-5">
-              <label htmlFor="address">Address</label>
-              <Field
-                id="address"
-                name="address"
-                type="text"
-                size="42"
-                maxLength="42"
-                className="text-purple-950 pl-1"
-              />
-            </div>
-            <div className="flex flex-col md:flex-row justify-center gap-y-2 md:gap-x-5">
-              <label htmlFor="price">Price (GHST)</label>
-              <Field
-                id="price"
-                name="price"
-                type="number"
-                className="text-purple-950 pl-1"
-              />
-            </div>
-            <ClientOnly>
-              {isConnected && address ? 
-                props.selectedAsset?.id &&
-                <div>
-                  <button
-                    className="bg-purple-800 hover:bg-gotchi-500 px-8"
-                    type="submit"
-                  >
-                    Create Otc
-                  </button>
-                </div> 
-               : (
-                <Web3Button />
-              )}
-            </ClientOnly>
-          </div>
-        </Form>
-      </Formik>
-      {/* {submitted && props.selectedAsset?.id && (
-        <CheckApproval gotchiId={props.selectedAsset?.id} />
-      )} */}
+      <div className="flex flex-col lg:flex-row justify-center place-items-center gap-y-2 lg:gap-x-10 leading-8">
+        <div className="flex flex-col md:flex-row justify-center gap-y-2 md:gap-x-5 w-1/3">
+          <label htmlFor="address">Address</label>
+          <input
+            id="address"
+            name="address"
+            type="text"
+            className="text-purple-950 pl-1 w-full"
+            onChange={(e) => setTargetWallet(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col md:flex-row justify-center gap-y-2 md:gap-x-5">
+          <label htmlFor="price">Price (GHST)</label>
+          <input
+            id="price"
+            name="price"
+            type="number"
+            className="text-purple-950 pl-1"
+            onChange={(e) => setPrice(parseInt(e.target.value))}
+          />
+        </div>
+        <ClientOnly>
+          {isConnected && address ? (
+            props.selectedAsset?.id && (
+              <div>
+                <OtcButton selectedAsset={props.selectedAsset} />
+              </div>
+            )
+          ) : (
+            <Web3Button />
+          )}
+        </ClientOnly>
+      </div>
     </>
   );
 };
-
 
 // const checkApproval = async (gotchiId: string): Promise<Boolean> => {
 //   const txContextVar: TxContextType = {

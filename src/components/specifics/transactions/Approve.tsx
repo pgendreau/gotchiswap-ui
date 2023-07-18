@@ -1,30 +1,28 @@
-import { aavegotchiAbi } from "@/abis/aavegotchi"
-import { TxContext } from "@/contexts/TxContext"
-import { convertAddressType } from "@/helpers/tools"
-import { useContext } from "react"
-import { useContractWrite, usePrepareContractWrite } from "wagmi"
-import { TxModal } from "../modals/TxModal"
+import { aavegotchiAbi } from "@/abis/aavegotchi";
+import { TxContext } from "@/contexts/TxContext";
+import { convertAddressType } from "@/helpers/tools";
+import { memo, useCallback, useContext, useEffect } from "react";
+import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { TxModal } from "../modals/TxModal";
 
-type ApproveProps = { gotchiId: string }
+type ApproveProps = { gotchiId: string };
 
-export const Approve = (props: ApproveProps) => {
-  const txContext = useContext(TxContext)
-
+export const Approve = memo((props: ApproveProps) => {
   const { config } = usePrepareContractWrite({
     address: convertAddressType(
       process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
     ),
     abi: aavegotchiAbi,
     functionName: "interact",
-    args: [
-      [props.gotchiId],
-    ],
+    args: [[props.gotchiId]],
+    chainId: 137,
   });
 
-  const { data,status, write } = useContractWrite(config)
+  console.log("Approve");
 
-  if (status != "success") {
-    return <TxModal />
-  }
-  return <CreateOtc />    
-}
+  const { data, status, write } = useContractWrite(config);
+
+  console.log("Approve renders");
+
+  return <>{status}</>;
+});
