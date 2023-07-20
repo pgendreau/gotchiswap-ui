@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { GotchiPicker } from "@/components/specifics/pickers/GotchiPicker";
-import { GotchiFieldsFragment } from "@/graphql/core/__generated__/graphql";
+import {
+  GotchiFieldsFragment,
+  PortalFieldsFragment,
+} from "@/graphql/core/__generated__/types";
 import { OtcForm } from "@/components/specifics/forms/Otc/OtcForm";
+import { SelectableAsset } from "@/types/types";
+import { PortalPicker } from "@/components/specifics/pickers/PortalPicker";
+import { WearablePicker } from "@/components/specifics/pickers/WearablePicker";
 
 const New = () => {
-  const [selectedAsset, setSelectedAsset] =
-    useState<GotchiFieldsFragment | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<SelectableAsset | null>(
+    null
+  );
   const [enablePicker, setEnablePicker] = useState<boolean>(true);
 
   return (
@@ -25,6 +32,20 @@ const New = () => {
       </div>
       <div>
         <GotchiPicker
+          selectedAsset={selectedAsset}
+          setSelectedAsset={setSelectedAsset}
+          enablePicker={enablePicker}
+        />
+      </div>
+      <div>
+        <PortalPicker
+          selectedAsset={selectedAsset}
+          setSelectedAsset={setSelectedAsset}
+          enablePicker={enablePicker}
+        />
+      </div>
+      <div>
+        <WearablePicker
           selectedAsset={selectedAsset}
           setSelectedAsset={setSelectedAsset}
           enablePicker={enablePicker}

@@ -13,7 +13,7 @@ export const Header = () => {
         </Link>
         <Link href="/">
           <div className="lg:text-7xl md:text-6xl text-5xl font-gotchi font-medium text-center text-white">
-            gotchiswap
+            gotchiswAp
           </div>
         </Link>
       </div>

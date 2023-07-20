@@ -1,4 +1,4 @@
-import { GotchiFieldsFragment } from "@/graphql/core/__generated__/graphql";
+import { GotchiFieldsFragment } from "@/graphql/core/__generated__/types";
 import {
   useAccount,
 } from "wagmi";
@@ -8,9 +8,10 @@ import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { ModalContext } from "@/contexts/ModalContext";
 import { Web3Button } from "@web3modal/react";
 import { OtcButton } from "./OtcButton";
+import { SelectableAsset } from "@/types/types";
 
 type OtcFormProps = {
-  selectedAsset: GotchiFieldsFragment | null;
+  selectedAsset: SelectableAsset | null;
   setEnablePicker: Dispatch<SetStateAction<boolean>>;
 }; 
 
@@ -36,6 +37,7 @@ export const OtcForm = (props: OtcFormProps) => {
             id="address"
             name="address"
             type="text"
+            disabled={submitted}
             className="text-purple-950 pl-1 w-full"
             onChange={(e) => setTargetWallet(e.target.value)}
           />
@@ -46,6 +48,7 @@ export const OtcForm = (props: OtcFormProps) => {
             id="price"
             name="price"
             type="number"
+            disabled={submitted}
             className="text-purple-950 pl-1"
             onChange={(e) => setPrice(parseInt(e.target.value))}
           />
@@ -54,7 +57,7 @@ export const OtcForm = (props: OtcFormProps) => {
           {isConnected && address ? (
             props.selectedAsset?.id && (
               <div>
-                <OtcButton selectedAsset={props.selectedAsset} />
+                <OtcButton selectedAsset={props.selectedAsset} assetPrice={price} targetWallet={targetWallet} />
               </div>
             )
           ) : (

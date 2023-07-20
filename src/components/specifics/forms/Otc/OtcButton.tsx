@@ -1,10 +1,13 @@
 import { aavegotchiAbi } from "@/abis/aavegotchi";
-import { GotchiFieldsFragment } from "@/graphql/core/__generated__/graphql";
+import { escrowAbi } from "@/abis/escrow";
+import { GotchiFieldsFragment, PortalFieldsFragment } from "@/graphql/core/__generated__/types";
 import { convertAddressType } from "@/helpers/tools";
 import { useContractRead, useContractWrite, usePrepareContractWrite } from "wagmi";
 
 type OtcButtonProps = {
-  selectedAsset: GotchiFieldsFragment | null;
+  selectedAsset: GotchiFieldsFragment | PortalFieldsFragment | null;
+  assetPrice: number;
+  targetWallet: string;
 };
 
 export const OtcButton = (props: OtcButtonProps) => {
@@ -14,11 +17,11 @@ export const OtcButton = (props: OtcButtonProps) => {
     ),
     abi: aavegotchiAbi,
     functionName: "getApproved",
-    args: [props.selectedAsset?.gotchiId],
+    args: [props.selectedAsset?.id],
   });
 
 
-  const { config } = usePrepareContractWrite({
+  const prepareApproveData = usePrepareContractWrite({
     address: convertAddressType(
       process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
     ),
@@ -29,7 +32,18 @@ export const OtcButton = (props: OtcButtonProps) => {
     // args: [[props.selectedAsset?.gotchiId]],
     chainId: 137,
   });
-  const approve = useContractWrite(config);
+  const approve = useContractWrite(prepareApproveData.config);
+
+  const prepareSellGotchiData = usePrepareContractWrite({
+    address: convertAddressType(
+      process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS
+    ),
+    abi: escrowAbi,
+    functionName: "sellGotchi",
+    args: [props.selectedAsset?.gotchiId, props.assetPrice, props.targetWallet], 
+    chainId: 137,
+  })
+  const sellGotchi = useContractWrite(prepareSellGotchiData.config);
 
   if (!isSuccess) {
     return <>CheckingApproval</>;

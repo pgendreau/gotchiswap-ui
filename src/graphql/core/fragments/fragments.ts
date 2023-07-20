@@ -1,6 +1,8 @@
-import { FragmentType, graphql } from '../__generated__';
+//import { FragmentType, graphql } from '../__generated__/types';
 
-export const GOTCHI_FIELDS = graphql(`
+import { gql } from "@apollo/client";
+
+export const GOTCHI_FIELDS = gql(`
   fragment GotchiFields on Aavegotchi {
     id
     gotchiId
@@ -18,4 +20,10 @@ export const GOTCHI_FIELDS = graphql(`
   }
 `);
 
-export type aavegotchi = FragmentType<typeof GOTCHI_FIELDS>
+export const PORTAL_FIELDS = gql(`
+  fragment PortalFields on Portal {
+    id
+    hauntId
+    openedAt
+  }
+`);

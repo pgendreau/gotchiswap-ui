@@ -1887,7 +1887,6 @@ export enum GotchiLending_OrderBy {
   GotchiGotchiId = 'gotchi__gotchiId',
   GotchiHauntId = 'gotchi__hauntId',
   GotchiId = 'gotchi__id',
-//   GotchiKinship = 'gotchi__kinship',
   GotchiLastInteracted = 'gotchi__lastInteracted',
   GotchiLending = 'gotchi__lending',
   GotchiLevel = 'gotchi__level',
@@ -1922,7 +1921,6 @@ export enum GotchiLending_OrderBy {
   Whitelist = 'whitelist',
   WhitelistId = 'whitelistId',
   WhitelistMembers = 'whitelistMembers',
-//   WhitelistId = 'whitelist__id',
   WhitelistMaxBorrowLimit = 'whitelist__maxBorrowLimit',
   WhitelistName = 'whitelist__name',
   WhitelistOwnerAddress = 'whitelist__ownerAddress'
@@ -2581,7 +2579,6 @@ export enum Portal_OrderBy {
   GotchiExperience = 'gotchi__experience',
   GotchiGotchiId = 'gotchi__gotchiId',
   GotchiHauntId = 'gotchi__hauntId',
-//   GotchiId = 'gotchi__id',
   GotchiKinship = 'gotchi__kinship',
   GotchiLastInteracted = 'gotchi__lastInteracted',
   GotchiLending = 'gotchi__lending',
@@ -3649,6 +3646,8 @@ export enum _SubgraphErrorPolicy_ {
 
 export type GotchiFieldsFragment = { __typename?: 'Aavegotchi', id: string, gotchiId: any, name: string, status: any, baseRarityScore: any, modifiedRarityScore: any, kinship: any, locked: boolean, equippedWearables: Array<number>, numericTraits: Array<number>, modifiedNumericTraits: Array<number>, level: any, experience: any };
 
+export type PortalFieldsFragment = { __typename?: 'Portal', id: string, hauntId: any, openedAt?: any | null };
+
 export type GotchiQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -3662,6 +3661,13 @@ export type GotchisQueryVariables = Exact<{
 
 
 export type GotchisQuery = { __typename?: 'Query', aavegotchis: Array<{ __typename?: 'Aavegotchi', id: string, gotchiId: any, name: string, status: any, baseRarityScore: any, modifiedRarityScore: any, kinship: any, locked: boolean, equippedWearables: Array<number>, numericTraits: Array<number>, modifiedNumericTraits: Array<number>, level: any, experience: any }> };
+
+export type PortalsQueryVariables = Exact<{
+  owner: Scalars['String']['input'];
+}>;
+
+
+export type PortalsQuery = { __typename?: 'Query', portals: Array<{ __typename?: 'Portal', id: string, hauntId: any, openedAt?: any | null }> };
 
 export const GotchiFieldsFragmentDoc = gql`
     fragment GotchiFields on Aavegotchi {
@@ -3678,6 +3684,13 @@ export const GotchiFieldsFragmentDoc = gql`
   modifiedNumericTraits
   level
   experience
+}
+    `;
+export const PortalFieldsFragmentDoc = gql`
+    fragment PortalFields on Portal {
+  id
+  hauntId
+  openedAt
 }
     `;
 export const GotchiDocument = gql`
@@ -3750,3 +3763,38 @@ export function useGotchisLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Go
 export type GotchisQueryHookResult = ReturnType<typeof useGotchisQuery>;
 export type GotchisLazyQueryHookResult = ReturnType<typeof useGotchisLazyQuery>;
 export type GotchisQueryResult = Apollo.QueryResult<GotchisQuery, GotchisQueryVariables>;
+export const PortalsDocument = gql`
+    query portals($owner: String!) {
+  portals(where: {buyer: $owner, openedAt: null}) {
+    ...PortalFields
+  }
+}
+    ${PortalFieldsFragmentDoc}`;
+
+/**
+ * __usePortalsQuery__
+ *
+ * To run a query within a React component, call `usePortalsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePortalsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePortalsQuery({
+ *   variables: {
+ *      owner: // value for 'owner'
+ *   },
+ * });
+ */
+export function usePortalsQuery(baseOptions: Apollo.QueryHookOptions<PortalsQuery, PortalsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PortalsQuery, PortalsQueryVariables>(PortalsDocument, options);
+      }
+export function usePortalsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PortalsQuery, PortalsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PortalsQuery, PortalsQueryVariables>(PortalsDocument, options);
+        }
+export type PortalsQueryHookResult = ReturnType<typeof usePortalsQuery>;
+export type PortalsLazyQueryHookResult = ReturnType<typeof usePortalsLazyQuery>;
+export type PortalsQueryResult = Apollo.QueryResult<PortalsQuery, PortalsQueryVariables>;
