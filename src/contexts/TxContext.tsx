@@ -9,18 +9,16 @@ import {
 
 // Create the context type. It contains all data needed to know the status of an ongoing Tx
 export type TxContextType = {
-  operationStatus: string;
+  operation: string
   hash: `0x${string}` | undefined;
-  error: Error | null;
-  status: "error" | "idle" | "success" | "loading" | null;
+  status: "error" | "idle" | "loading" | "success" | undefined;
 };
 
 // Empty context value for setup
 export const txContextDefaultValue: TxContextType = {
+  operation: '',
   hash: undefined,
-  error: null,
-  status: null,
-  operationStatus: "",
+  status: undefined
 };
 
 // The context itself

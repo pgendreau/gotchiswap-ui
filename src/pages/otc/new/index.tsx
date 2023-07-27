@@ -44,13 +44,13 @@ const New = () => {
           enablePicker={enablePicker}
         />
       </div>
-      <div>
+      {/* <div>
         <WearablePicker
           selectedAsset={selectedAsset}
           setSelectedAsset={setSelectedAsset}
           enablePicker={enablePicker}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

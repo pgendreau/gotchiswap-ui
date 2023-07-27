@@ -1,11 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.cdnfonts.com/css/kanit-2');
+@import url("https://fonts.cdnfonts.com/css/kanit-2");
 
 @font-face {
-    font-family: 'Gotchi';
-    src: url('/fonts/AAVEGOTCHi_FONT_V1.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Gotchi";
+  src: url("/fonts/AAVEGOTCHi_FONT_V1.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@layer components {
+  .btn-base {
+    @apply rounded bg-purple-800 px-2 py-1 text-base font-semibold text-white shadow-sm hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-800;
+  }
 }

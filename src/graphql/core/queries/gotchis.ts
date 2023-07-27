@@ -11,3 +11,14 @@ query gotchis($owner: String!){
   }
 }
 `
+
+export const GET_GOTCHIS_BY_ID = gql`
+${GOTCHI_FIELDS}
+query gotchisById($ids: [ID!]){
+	aavegotchis(where:{
+    id_in: $ids
+  }) {    
+    ...GotchiFields
+  }
+}
+`

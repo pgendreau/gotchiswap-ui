@@ -1,21 +1,29 @@
 import { useContext } from 'react'
-import { TxContext } from '@/contexts/TxContext'
+import { TxContext, TxContextType } from '@/contexts/TxContext'
 import { BaseModal } from '@/components/generics/modals/BaseModal'
 import { useWaitForTransaction } from 'wagmi'
+import { ModalContext } from '@/contexts/ModalContext'
+
+const TxStatus = (props: TxContextType) => {
+  
+  const { data, isError, isLoading } = useWaitForTransaction({ hash: props.hash })
+
+  if (isLoading) return <div>Processing…</div>
+  if (isError) return <div>Transaction error</div>
+  
+  return <div>Transaction: {JSON.stringify(data)}</div>
+}
 
 export const TxModal = () => {
   const ctx = useContext(TxContext)
-  if (!ctx) return <></>
+  const modalCtx = useContext(ModalContext)
 
-  const { data, isError, isLoading, isSuccess } = useWaitForTransaction({ hash: ctx.txContextValue.hash })
-  console.log("Tx Modal Rendered with hash: ", ctx.txContextValue.hash, ctx.txContextValue.operationStatus)
+  if (!ctx || !ctx.txContextValue.hash) return <></>
+  modalCtx?.setOpen(true)
   return (
     <BaseModal>
-      { ctx.txContextValue.operationStatus }
-      { !!ctx.txContextValue.hash && (`Transaction hash: ${ctx.txContextValue.hash}`)}
-      { isError && `Trannsaction failed...` }
-      { isLoading && `Transaction pending...` }
-      { isSuccess && `Transaction successful!` }
+      <TxStatus {...ctx.txContextValue} />
     </BaseModal>
   )
 }
+

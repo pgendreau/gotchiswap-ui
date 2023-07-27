@@ -1,5 +1,6 @@
 import { GotchiFieldsFragment } from "@/graphql/core/__generated__/types";
-import { SvgFieldsFragment } from "@/graphql/svg/__generated__/graphql";
+import { SvgFieldsFragment } from "@/graphql/svg/__generated__/types";
+
 
 type GotchiCardProps = {
   gotchi: GotchiFieldsFragment;
@@ -8,7 +9,7 @@ type GotchiCardProps = {
 
 export const GotchiCard = (props: GotchiCardProps) => {
   return (
-    <>
+    <div className="flex flex-col">
       <div className="font-kanit text-sm text-center">
         {`${props.gotchi?.name} (${props.gotchi?.modifiedRarityScore})`}{" "}
       </div>
@@ -38,6 +39,6 @@ export const GotchiCard = (props: GotchiCardProps) => {
           <div className="w-1/2">{`EYC ${props.gotchi?.modifiedNumericTraits[1]}`}</div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

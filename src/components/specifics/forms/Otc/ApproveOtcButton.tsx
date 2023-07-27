@@ -1,0 +1,84 @@
+import { aavegotchiAbi } from "@/abis/aavegotchi";
+import { escrowAbi } from "@/abis/escrow";
+import {
+  GotchiFieldsFragment,
+  PortalFieldsFragment,
+} from "@/graphql/core/__generated__/types";
+import { convertAddressType } from "@/helpers/tools";
+import {
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
+import { CreateOtcButton } from "./CreateOtcButton";
+import { SelectableAsset } from "@/types/types";
+import { useContext, useState } from "react";
+import { TxContext, TxContextType } from "@/contexts/TxContext";
+
+type OtcButtonProps = {
+  selectedAsset: SelectableAsset | null;
+  assetPrice: number;
+  targetWallet: string;
+};
+
+export const ApproveOtcButton = (props: OtcButtonProps) => {
+  // const txContext = useContext(TxContext);
+
+  const { data, isSuccess, status } = useContractRead({
+    address: convertAddressType(
+      process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
+    ),
+    abi: aavegotchiAbi,
+    functionName: "getApproved",
+    args: [props.selectedAsset?.id],
+  });
+
+  const prepareApproveData = usePrepareContractWrite({
+    address: convertAddressType(
+      process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
+    ),
+    abi: aavegotchiAbi,
+    functionName: "approve",
+    args: [
+      convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS),
+      props.selectedAsset?.id,
+    ],
+    // functionName: "interact",
+    // args: [[props.selectedAsset?.gotchiId]],
+    chainId: 137,
+  });
+  const approve = useContractWrite(prepareApproveData.config);
+
+  const waitForTx = useWaitForTransaction({
+    hash: approve.data?.hash,
+  });
+
+  if (!isSuccess) {
+    return <>CheckingApproval</>;
+  }
+  
+  if (
+    (data &&
+      (data as string).toLowerCase() ==
+        convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS)) ||
+    waitForTx.status == "success"
+  ) {
+    return (
+      <CreateOtcButton
+        selectedAsset={props.selectedAsset}
+        assetPrice={props.assetPrice}
+        targetWallet={props.targetWallet}
+      />
+    );
+  } else {
+    return (
+      <button
+        className="bg-purple-800 hover:bg-gotchi-500 px-8"
+        onClick={() => approve.write?.()}
+      >
+        Approve OTC contract
+      </button>
+    );
+  }
+};

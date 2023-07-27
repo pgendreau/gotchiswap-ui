@@ -1,6 +1,6 @@
-import { graphql } from '../__generated__';
+import { gql } from "@apollo/client";
 
-export const SVG_FIELDS = graphql(`
+export const SVG_FIELDS = gql(`
   fragment SvgFields on Aavegotchi {
     id
     svg

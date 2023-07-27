@@ -1,4 +1,3 @@
-import config from "next/config";
 import { PropsWithChildren } from "react";
 import {
   EthereumClient,
@@ -8,6 +7,7 @@ import {
 import { Web3Modal } from "@web3modal/react";
 import { polygon } from "viem/chains";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 export const InjectWagmi = (props: PropsWithChildren) => {
   // const config = createConfig(
@@ -28,17 +28,22 @@ export const InjectWagmi = (props: PropsWithChildren) => {
 
   const chains = [polygon];
   const projectId = "0feff3f81d41f59c2705120f38efc5d6";
-
+  
   const { publicClient } = configureChains(chains, [
-    w3mProvider({ projectId }),
-  ]);
+    process.env.NEXT_PUBLIC_APP_ENV === "hardhat" ? 
+    jsonRpcProvider({
+      rpc: (chain) => ({
+        http: "http://localhost:8545",
+      })     
+    }) : w3mProvider({ projectId })
+  ]); 
+
   const wagmiConfig = createConfig({
     autoConnect: true,
     connectors: w3mConnectors({ projectId, chains }),
     publicClient,
   });
   const ethereumClient = new EthereumClient(wagmiConfig, chains);
-
 
   return (
     <>
@@ -49,13 +54,12 @@ export const InjectWagmi = (props: PropsWithChildren) => {
         defaultChain={polygon}
         themeMode="dark"
         themeVariables={{
-          '--w3m-font-family': 'Kanit, sans-serif',
-          '--w3m-accent-color': '#fff',
-          '--w3m-accent-fill-color': '#000000',
-          '--w3m-overlay-background-color': '#3b0764',
-          '--w3m-background-color' :  '#fff',
-          '--w3m-logo-image-url': 'http://localhost:3000/images/wallet.png',
-
+          "--w3m-font-family": "Kanit, sans-serif",
+          "--w3m-accent-color": "#fff",
+          "--w3m-accent-fill-color": "#000000",
+          "--w3m-overlay-background-color": "#3b0764",
+          "--w3m-background-color": "#fff",
+          "--w3m-logo-image-url": "http://localhost:3000/images/wallet.png",
         }}
       />
     </>

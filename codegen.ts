@@ -14,15 +14,15 @@ const config: CodegenConfig = {
                 withResultType: true,
             }
         },
-        "src/graphql/svg/__generated__/": {
+        "src/graphql/svg/__generated__/types.ts": {
             schema: "https://api.thegraph.com/subgraphs/name/aavegotchi/aavegotchi-svg",
             documents: ["src/graphql/svg/queries/*.ts", "src/graphql/svg/fragments/*.ts"],
-            preset: 'client'
-            // plugins: ['typescript', 'typescript-operations', 'typescript-react-apollo'],
-            // config: {
-            //     withHooks: true,
-            //     withResultType: true,
-            // }
+            // preset: 'client'
+            plugins: ['typescript', 'typescript-operations', 'typescript-react-apollo'],
+            config: {
+                withHooks: true,
+                withResultType: true,
+            }
         },
     }
 };

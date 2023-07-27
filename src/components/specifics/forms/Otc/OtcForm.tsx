@@ -7,8 +7,9 @@ import { TxContext, TxContextType } from "@/contexts/TxContext";
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { ModalContext } from "@/contexts/ModalContext";
 import { Web3Button } from "@web3modal/react";
-import { OtcButton } from "./OtcButton";
+import { ApproveOtcButton } from "./ApproveOtcButton";
 import { SelectableAsset } from "@/types/types";
+import { isAddressValid } from "@/helpers/tools";
 
 type OtcFormProps = {
   selectedAsset: SelectableAsset | null;
@@ -54,13 +55,13 @@ export const OtcForm = (props: OtcFormProps) => {
           />
         </div>
         <ClientOnly>
-          {isConnected && address ? (
-            props.selectedAsset?.id && (
+        {isConnected && address ? 
+           ((props.selectedAsset?.id && isAddressValid(targetWallet) && price > 0) && (
               <div>
-                <OtcButton selectedAsset={props.selectedAsset} assetPrice={price} targetWallet={targetWallet} />
+                <ApproveOtcButton selectedAsset={props.selectedAsset} assetPrice={price} targetWallet={targetWallet} />
               </div>
-            )
-          ) : (
+            
+          )) : (
             <Web3Button />
           )}
         </ClientOnly>
@@ -68,96 +69,3 @@ export const OtcForm = (props: OtcFormProps) => {
     </>
   );
 };
-
-// const checkApproval = async (gotchiId: string): Promise<Boolean> => {
-//   const txContextVar: TxContextType = {
-//     error: null,
-//     status: "loading",
-//     hash: undefined,
-//     operationStatus: "Checking if Gotchi is approved for transfer",
-//   };
-//   if (txCtx) txCtx.setTxContextValue(txContextVar);
-//   if (modalCtx) modalCtx.setOpen(true);
-
-//   const data = await readContract({
-//     address: convertAddressType(
-//       process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
-//     ),
-//     abi: aavegotchiAbi,
-//     functionName: "getApproved",
-//     args: [gotchiId],
-//   });
-
-//   return (
-//     data == convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS)
-//   );
-// };
-
-// const sendApproval = async (gotchiId: string) => {
-//   const txContextVar: TxContextType = {
-//     error: null,
-//     status: "idle",
-//     hash: undefined,
-//     operationStatus:
-//       "Preparing Transaction to approve Gotchi transfer to OTC contract",
-//   };
-//   if (txCtx) txCtx.setTxContextValue(txContextVar);
-//   if (modalCtx) modalCtx.setOpen(true);
-//   try {
-//     /*      const { request } = await prepareWriteContract({
-//       address: convertAddressType(
-//         process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
-//       ),
-//       abi: aavegotchiAbi,
-//       functionName: "approve",
-//       args: [
-//         convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS),
-//         gotchiId,
-//       ],
-//     }); */
-
-//     const { config } = usePrepareContractWrite({
-//       address: convertAddressType(
-//         process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
-//       ),
-//       abi: aavegotchiAbi,
-//       functionName: "interact",
-//       args: [[gotchiId]],
-//     });
-
-//     // const { request } = await prepareWriteContract({
-//     //   address: convertAddressType(
-//     //     process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
-//     //   ),
-//     //   abi: aavegotchiAbi,
-//     //   functionName: "interact",
-//     //   args: [
-//     //     [gotchiId],
-//     //   ],
-//     // });
-
-//     const txContextVar2: TxContextType = {
-//       error: null,
-//       status: "idle",
-//       hash: undefined,
-//       operationStatus: "Waiting for transaction to be signed",
-//     };
-//     if (txCtx) txCtx.setTxContextValue(txContextVar2);
-
-//     const { hash } = await writeContract(request);
-
-//     const txContextVar3: TxContextType = {
-//       error: null,
-//       status: "idle",
-//       hash: hash,
-//       operationStatus: "Approving Gotchi transfer to OTC contract",
-//     };
-//     if (txCtx) txCtx.setTxContextValue(txContextVar3);
-//   } catch (error) {
-//     txContextVar.status = "error";
-//     txContextVar.operationStatus =
-//       "Error approving Gotchi transfer to OTC contract";
-//     console.log(error);
-//     if (txCtx) txCtx.setTxContextValue(txContextVar);
-//   }
-// };

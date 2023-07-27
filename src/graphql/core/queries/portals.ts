@@ -12,3 +12,14 @@ query portals($owner: String!){
   }
 }
 `
+
+export const GET_PORTALS_BY_ID = gql`
+${PORTAL_FIELDS}
+query portalsById($ids: [ID!]){
+	portals(where:{
+    id_in: $ids
+  }) {    
+    ...PortalFields
+  }
+}
+`

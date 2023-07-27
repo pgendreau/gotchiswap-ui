@@ -20,13 +20,15 @@ export const GotchiPicker = (props: GotchiPickerProps) => {
   const address = useAccount().address?.toLowerCase() ?? "";
   const gotchis = useGotchisQuery({
     variables: { owner: address },
-    context: { clientName: "core" },
+    context: { clientName: "core" },    
+    pollInterval: 6000,
   });
-
+  gotchis.refetch()
   const ids = gotchis.data?.aavegotchis?.map((gotchi) => gotchi?.id);
   const svgs = useGotchisSvgQuery({
     variables: { ids: ids },
     context: { clientName: "svg" },
+    pollInterval: 6000,
   });
 
   return (

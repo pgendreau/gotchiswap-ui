@@ -245,6 +245,8 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type SvgFieldsFragment = { __typename?: 'Aavegotchi', id: string, svg: string };
+
 export type GotchiSvgQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -259,15 +261,19 @@ export type GotchisSvgQueryVariables = Exact<{
 
 export type GotchisSvgQuery = { __typename?: 'Query', aavegotchis: Array<{ __typename?: 'Aavegotchi', id: string, svg: string }> };
 
-
+export const SvgFieldsFragmentDoc = gql`
+    fragment SvgFields on Aavegotchi {
+  id
+  svg
+}
+    `;
 export const GotchiSvgDocument = gql`
     query gotchiSvg($id: ID!) {
   aavegotchi(id: $id) {
-    id
-    svg
+    ...SvgFields
   }
 }
-    `;
+    ${SvgFieldsFragmentDoc}`;
 
 /**
  * __useGotchiSvgQuery__
@@ -299,11 +305,10 @@ export type GotchiSvgQueryResult = Apollo.QueryResult<GotchiSvgQuery, GotchiSvgQ
 export const GotchisSvgDocument = gql`
     query gotchisSvg($ids: [ID!]) {
   aavegotchis(where: {id_in: $ids}) {
-    id
-    svg
+    ...SvgFields
   }
 }
-    `;
+    ${SvgFieldsFragmentDoc}`;
 
 /**
  * __useGotchisSvgQuery__

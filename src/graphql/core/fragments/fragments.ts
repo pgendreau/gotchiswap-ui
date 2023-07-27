@@ -25,5 +25,6 @@ export const PORTAL_FIELDS = gql(`
     id
     hauntId
     openedAt
+    status
   }
 `);

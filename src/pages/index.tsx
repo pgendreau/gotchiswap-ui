@@ -33,12 +33,12 @@ const Home = () => {
         >
           Create an OTC deal
         </Link>
-        <button
-          type="button"
+        <Link
+          href={"/otc/sales"}
           className="rounded-md bg-gotchi-500 px-5 py-4 text-2xl font-semibold text-white shadow-sm hover:bg-gotchi-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gotchi-500"
         >
           See my deals
-        </button>
+        </Link>
       </div>
     </>
   );
