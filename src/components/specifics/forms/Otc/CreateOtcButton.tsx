@@ -7,7 +7,7 @@ import {
 } from "@/graphql/core/__generated__/types";
 import { convertAddressType } from "@/helpers/tools";
 import { SelectableAsset } from "@/types/types";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import {
   useContractRead,
   useContractWrite,
@@ -22,22 +22,7 @@ type OtcButtonProps = {
 };
 
 export const CreateOtcButton = (props: OtcButtonProps) => {
-  const prepareApproveData = usePrepareContractWrite({
-    address: convertAddressType(
-      process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
-    ),
-    abi: aavegotchiAbi,
-    functionName: "approve",
-    args: [
-      convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS),
-      props.selectedAsset?.id,
-    ],
-    // functionName: "interact",
-    // args: [[props.selectedAsset?.gotchiId]],
-    chainId: 137,
-  });
-  const approve = useContractWrite(prepareApproveData.config);
-
+  const txContext = useContext(TxContext);
   const prepareSellGotchiData = usePrepareContractWrite({
     address: convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS),
     abi: escrowAbi,
@@ -56,14 +41,15 @@ export const CreateOtcButton = (props: OtcButtonProps) => {
     hash: sellGotchi.data?.hash,
   });
 
-  // const txContext = useContext(TxContext);
-  // if (txContext && sellGotchi.data?.hash) {
-  //   txContext.setTxContextValue({
-  //     hash: sellGotchi.data?.hash,
-  //     status: waitForTx.status,
-  //     operation: "Creating OTC",
-  //   });
-  // }
+  useEffect(() => {
+    if (txContext && sellGotchi.data?.hash) {
+      txContext?.setTxContextValue({
+        hash: sellGotchi.data?.hash,
+        operation: "Creating OTC offer",
+        status: waitForTx.status,
+      });
+    }
+  }, [waitForTx.status, sellGotchi.data]);
 
   return (
     <button

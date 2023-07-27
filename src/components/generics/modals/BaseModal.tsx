@@ -1,12 +1,12 @@
-import { Dispatch, Fragment, PropsWithChildren, useContext, useState } from 'react'
+import { Dispatch, Fragment, PropsWithChildren, SetStateAction, useContext, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ModalContext } from '@/contexts/ModalContext'
-export const BaseModal = (props: PropsWithChildren) => {
-  const modalCtx = useContext(ModalContext)
-  if (modalCtx === null) return <></>
+//export const BaseModal = (props: PropsWithChildren  & { open: boolean, setOpen: Dispatch<SetStateAction<boolean>>}) => {
+  export const BaseModal = (props: PropsWithChildren) => {
+    const [open, setOpen] = useState(true)
   return (
-    <Transition.Root show={modalCtx.open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={modalCtx.setOpen}>
+    <Transition.Root show={open} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={ () => setOpen(false)}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -45,7 +45,7 @@ export const BaseModal = (props: PropsWithChildren) => {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-gotchi-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gotchi-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    onClick={() => modalCtx.setOpen(false)}
+                    onClick={ () => setOpen(false)}
                   >
                     Close modal
                   </button>

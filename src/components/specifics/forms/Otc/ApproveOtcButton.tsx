@@ -13,7 +13,7 @@ import {
 } from "wagmi";
 import { CreateOtcButton } from "./CreateOtcButton";
 import { SelectableAsset } from "@/types/types";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TxContext, TxContextType } from "@/contexts/TxContext";
 
 type OtcButtonProps = {
@@ -23,7 +23,7 @@ type OtcButtonProps = {
 };
 
 export const ApproveOtcButton = (props: OtcButtonProps) => {
-  // const txContext = useContext(TxContext);
+  const txContext = useContext(TxContext);
 
   const { data, isSuccess, status } = useContractRead({
     address: convertAddressType(
@@ -54,10 +54,20 @@ export const ApproveOtcButton = (props: OtcButtonProps) => {
     hash: approve.data?.hash,
   });
 
+  useEffect(() => {
+    if (txContext && approve.data?.hash) {
+      txContext?.setTxContextValue({
+        hash: approve.data?.hash,
+        operation: "Approving OTC contract",
+        status: waitForTx.status,
+      });
+    }
+  }, [waitForTx.status, approve.data]);
+
   if (!isSuccess) {
     return <>CheckingApproval</>;
   }
-  
+
   if (
     (data &&
       (data as string).toLowerCase() ==
@@ -73,12 +83,16 @@ export const ApproveOtcButton = (props: OtcButtonProps) => {
     );
   } else {
     return (
-      <button
-        className="bg-purple-800 hover:bg-gotchi-500 px-8"
-        onClick={() => approve.write?.()}
-      >
-        Approve OTC contract
-      </button>
+      <>
+        <button
+          className="bg-purple-800 hover:bg-gotchi-500 px-8"
+          onClick={() => {
+            approve.write?.();
+          }}
+        >
+          Approve OTC contract
+        </button>
+      </>
     );
   }
 };
