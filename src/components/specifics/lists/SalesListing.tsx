@@ -3,14 +3,16 @@ import { PortalFieldsFragment, PortalStatus, usePortalsByIdQuery, usePortalsQuer
 import { convertAddressType } from "@/helpers/tools";
 import { Sale, SaleContractResponse } from "@/types/types";
 import { readContract } from "@wagmi/core";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { readContracts, useAccount, useContractRead } from "wagmi";
 import { SalesPicker } from "./SalesPicker";
+import { TxContext } from "@/contexts/TxContext";
 
 export const SalesListing = () => {
   
   const { address, isConnected } = useAccount();
   const [sales, setSales] = useState<Sale[]>([]);
+  const txContext = useContext(TxContext);
 
   const getSales = useCallback(async (): Promise<Sale[]> => {
     const offers = [];
@@ -55,14 +57,14 @@ export const SalesListing = () => {
   }, [address, isConnected]);
 
   useEffect(() => {
-    if (isConnected && address && address.startsWith("0x")) {
+    if ((isConnected && address && address.startsWith("0x")) || txContext?.txContextValue.status === "success") {
       getSales().then((sales) => {
         setSales(sales);
       }).catch((error) => {
         console.log(error)
       })
     }
-  }, [getSales, address, isConnected]);
+  }, [getSales, address, isConnected, txContext?.txContextValue.status]);
 
   if (!sales || (sales && sales.length === 0)) {
     return <>No Sales</>;
