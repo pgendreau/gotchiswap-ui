@@ -25,7 +25,6 @@ export const AbortSaleButton = (props: {sale: SaleWithAsset}) => {
   });
 
   useEffect(() => {
-    console.log("waitForTx.status", waitForTx.status);
     if (txContext?.setTxContextValue && abortTx.data?.hash) {
       txContext?.setTxContextValue({
         hash: abortTx.data?.hash,
