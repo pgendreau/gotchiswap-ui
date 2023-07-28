@@ -7,7 +7,7 @@ import { BuyButton } from "./BuyButton";
 import { ApproveBuyButton } from "./ApproveBuyButton";
 
 export const CheckApproveBeforeBuyButton = (props: { sale: SaleWithAsset }) => {
-  const [neededAllowance, setNeededAllowance] = useState<bigint>(BigInt(0));
+  const [neededAllowance, setNeededAllowance] = useState<bigint>(props.sale.priceInWei);
   const { address, isConnected } = useAccount();
 
   const { data, isSuccess, status, error } = useContractRead({
@@ -17,7 +17,7 @@ export const CheckApproveBeforeBuyButton = (props: { sale: SaleWithAsset }) => {
     args: [
       address ?? "0x0",
       convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS),
-    ],
+    ]// ,watch: true
   });
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export const CheckApproveBeforeBuyButton = (props: { sale: SaleWithAsset }) => {
   }
 
   if (data !== undefined) {
-    if (props.sale.priceInWei > data) {
+    if (props.sale.priceInWei > data || neededAllowance > BigInt(0)) {
       return (
         <ApproveBuyButton
           sale={props.sale}

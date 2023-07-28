@@ -44,8 +44,6 @@ export const ApproveOtcButton = (props: OtcButtonProps) => {
       convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS),
       props.selectedAsset?.id,
     ],
-    // functionName: "interact",
-    // args: [[props.selectedAsset?.gotchiId]],
     chainId: 137,
   });
   const approve = useContractWrite(prepareApproveData.config);
@@ -55,14 +53,15 @@ export const ApproveOtcButton = (props: OtcButtonProps) => {
   });
 
   useEffect(() => {
-    if (txContext && approve.data?.hash) {
+    console.log("waitForTx.status", waitForTx.status);
+    if (txContext?.setTxContextValue && approve.data?.hash) {
       txContext?.setTxContextValue({
         hash: approve.data?.hash,
         operation: "Approving OTC contract",
         status: waitForTx.status,
       });
     }
-  }, [waitForTx.status, approve.data]);
+  }, [waitForTx.status, approve.data?.hash, txContext?.setTxContextValue]);
 
   if (!isSuccess) {
     return <>CheckingApproval</>;

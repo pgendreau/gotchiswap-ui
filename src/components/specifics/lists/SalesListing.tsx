@@ -57,11 +57,12 @@ export const SalesListing = () => {
   }, [address, isConnected]);
 
   useEffect(() => {
+    console.log("useffect listing")
     if ((isConnected && address && address.startsWith("0x")) || txContext?.txContextValue.status === "success") {
       getSales().then((sales) => {
         setSales(sales);
       }).catch((error) => {
-        console.log(error)
+        setSales([]);
       })
     }
   }, [getSales, address, isConnected, txContext?.txContextValue.status]);

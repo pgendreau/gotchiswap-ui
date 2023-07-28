@@ -11,26 +11,28 @@ type SaleCardProps = PropsWithChildren & {
 
 export const SaleCard = (props: SaleCardProps) => {
   return (
-    <div
-      onClick={() => {
-        props.selected === props.sale.assetId
-          ? props.setSelected(BigInt(0))
-          : props.setSelected(props.sale.assetId);
-      }}
-      className={classNames(
-        props.selected === props.sale.assetId
-          ? "bg-gotchi-500"
-          : "bg-purple-800",
-        "flex flex-row gap-x-5 p-5 rounded-xl cursor-pointer"
-      )}
-    >
-      {props.children}
-      <div className="flex flex-col gap-y-5 w-48">
-        <div>{`Price: ${readablePrice(props.sale.priceInWei)} GHST`}</div>
-        {props.sale.assetId === props.selected && (
-          <AbortSaleButton sale={props.sale} />
+    <div className="flex flex-col gap-y-2 place-items-center">
+      <div
+        onClick={() => {
+          props.selected === props.sale.assetId
+            ? props.setSelected(BigInt(0))
+            : props.setSelected(props.sale.assetId);
+        }}
+        className={classNames(
+          props.selected === props.sale.assetId
+            ? "bg-gotchi-500"
+            : "bg-purple-800",
+          "flex flex-row gap-x-5 p-5 rounded-xl cursor-pointer"
         )}
+      >
+        {props.children}
+        <div className="flex flex-col gap-y-5 w-48">
+          <div>{`Price: ${readablePrice(props.sale.priceInWei)} GHST`}</div>
+        </div>
       </div>
+      {props.sale.assetId === props.selected && (
+        <AbortSaleButton sale={props.sale} />
+      )}
     </div>
   );
 };

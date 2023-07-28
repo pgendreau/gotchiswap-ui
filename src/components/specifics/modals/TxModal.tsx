@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { TxContext, TxContextType } from "@/contexts/TxContext";
 import { BaseModal } from "@/components/generics/modals/BaseModal";
 import { useWaitForTransaction } from "wagmi";
@@ -6,27 +6,26 @@ import { ModalContext } from "@/contexts/ModalContext";
 import { shortenAddress } from "@/helpers/tools";
 import { Transition, Dialog } from "@headlessui/react";
 
-const TxStatus = (props: TxContextType) => {
-  // const { data, isError, isLoading } = useWaitForTransaction({ hash: props.hash })
-
-  // if (isLoading) return <div>Processing…</div>
-  // if (isError) return <div>Transaction error</div>
-
-  return (
-    <div className="flex flex-col gap-y-3">
-      <div>{props.operation}</div>
-      <div>Tx status: {props.status}</div>
-      <div>Tx hash: {shortenAddress(props.hash)}</div>
-    </div>
-  );
-};
-
 export const TxModal = () => {
   const ctx = useContext(TxContext);
   const [open, setOpen] = useState(true);
-  if (!ctx || !ctx.txContextValue.hash) {
-    return <></>
-  } 
+  // const [open, setOpen] = useState(ctx?.txContextValue && ctx.txContextValue.hash ? true : false);
+  // if (!ctx || !ctx.txContextValue.hash) {
+  //   return <></>
+  // }
+
+  useEffect(() => {
+    if (
+      ctx?.txContextValue &&
+      ctx?.txContextValue.hash &&
+      ctx?.txContextValue.status !== "success"
+    ) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [ctx?.txContextValue]);
+
   console.log("open modal");
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -65,9 +64,18 @@ export const TxModal = () => {
                     </Dialog.Title>
                     <div className="mt-2 text-white">
                       <div className="flex flex-col gap-y-3">
-                        <div>{ctx.txContextValue.operation}</div>
-                        <div>Tx status: {ctx.txContextValue.status}</div>
-                        <div>Tx hash: {shortenAddress(ctx.txContextValue.hash)}</div>
+                        <div>{ctx && ctx.txContextValue.operation}</div>
+                        <div>Tx status: {ctx && ctx.txContextValue.status}</div>
+                        {ctx && (
+                          <div>
+                            <a
+                              href={`https://polygonscan.com/tx/${ctx.txContextValue.hash}`}
+                              target="_blank"
+                            >
+                              Tx hash: {shortenAddress(ctx.txContextValue.hash)}
+                            </a>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

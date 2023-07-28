@@ -9,7 +9,6 @@ import { convertAddressType } from "@/helpers/tools";
 import { SelectableAsset } from "@/types/types";
 import { useContext, useEffect } from "react";
 import {
-  useContractRead,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
@@ -42,14 +41,15 @@ export const CreateOtcButton = (props: OtcButtonProps) => {
   });
 
   useEffect(() => {
-    if (txContext && sellGotchi.data?.hash) {
+    console.log("waitForTx.status", waitForTx.status)
+    if (txContext?.setTxContextValue && sellGotchi.data?.hash) {
       txContext?.setTxContextValue({
         hash: sellGotchi.data?.hash,
         operation: "Creating OTC offer",
         status: waitForTx.status,
       });
     }
-  }, [waitForTx.status, sellGotchi.data]);
+  }, [waitForTx.status, sellGotchi.data?.hash, txContext?.setTxContextValue]);
 
   return (
     <button

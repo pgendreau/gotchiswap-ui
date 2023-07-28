@@ -7,6 +7,7 @@ import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from
 
 export const AbortSaleButton = (props: {sale: SaleWithAsset}) => {
   const txContext = useContext(TxContext);
+
   const abortTxData = usePrepareContractWrite({
     address: convertAddressType(
       process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS
@@ -16,6 +17,7 @@ export const AbortSaleButton = (props: {sale: SaleWithAsset}) => {
     args: [props.sale.index],
     chainId: 137,
   });
+  
   const abortTx = useContractWrite(abortTxData.config);
 
   const waitForTx = useWaitForTransaction({
@@ -23,15 +25,15 @@ export const AbortSaleButton = (props: {sale: SaleWithAsset}) => {
   });
 
   useEffect(() => {
-    debugger
-    if (txContext && abortTx.data?.hash) {
+    console.log("waitForTx.status", waitForTx.status);
+    if (txContext?.setTxContextValue && abortTx.data?.hash) {
       txContext?.setTxContextValue({
         hash: abortTx.data?.hash,
         operation: "Aborting OTC offer",
         status: waitForTx.status,
       });
     }
-  }, [waitForTx.status, abortTx.data]);
+  }, [waitForTx.status, abortTx.data?.hash, txContext?.setTxContextValue]);
 
   return (
     <button className="btn-base" onClick={ () => abortTx.write?.() }>
