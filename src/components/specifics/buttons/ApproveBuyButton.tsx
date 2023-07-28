@@ -27,7 +27,7 @@ export const ApproveBuyButton = (props: ApproveBuyButtonProps) => {
   const prepareIncreaseAllowanceTx = usePrepareContractWrite({
     address: convertAddressType(process.env.NEXT_PUBLIC_GHST_CONTRACT_ADDRESS),
     abi: ghstAbi,
-    functionName: "increaseAllowance",
+    functionName: "approve",
     args: [
       convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS),
       props.neededAllowance,

@@ -24,6 +24,7 @@ const Home = () => {
           Its goal is to provide a non custodial, trustless way for individuals
           to trade assets in an OTC fashion
         </p>
+        <p>For now this is still an early version, use at your own risk !</p>
       </div>
 
       <div className="flex flex-row justify-center gap-x-10 pt-10">
