@@ -1,18 +1,11 @@
 import { Fragment, useContext, useEffect, useState } from "react";
-import { TxContext, TxContextType } from "@/contexts/TxContext";
-import { BaseModal } from "@/components/generics/modals/BaseModal";
-import { useWaitForTransaction } from "wagmi";
-import { ModalContext } from "@/contexts/ModalContext";
+import { TxContext } from "@/contexts/TxContext";
 import { shortenAddress } from "@/helpers/tools";
 import { Transition, Dialog } from "@headlessui/react";
 
 export const TxModal = () => {
   const ctx = useContext(TxContext);
   const [open, setOpen] = useState(true);
-  // const [open, setOpen] = useState(ctx?.txContextValue && ctx.txContextValue.hash ? true : false);
-  // if (!ctx || !ctx.txContextValue.hash) {
-  //   return <></>
-  // }
 
   useEffect(() => {
     if (

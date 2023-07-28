@@ -9,7 +9,6 @@ import { convertAddressType } from "@/helpers/tools";
 import { SaleWithAsset } from "@/types/types";
 import { useContext, useEffect } from "react";
 import {
-  useContractRead,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,

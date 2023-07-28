@@ -53,6 +53,7 @@ export const GotchiPicker = (props: GotchiPickerProps) => {
               svg={svgs.data?.aavegotchis?.find(
                 (svg) => svg?.id === gotchi?.id
               )}
+              withBorders
             />
           </div>
         ))}

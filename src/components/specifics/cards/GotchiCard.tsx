@@ -1,42 +1,52 @@
 import { GotchiFieldsFragment } from "@/graphql/core/__generated__/types";
 import { SvgFieldsFragment } from "@/graphql/svg/__generated__/types";
-
+import { classNames } from "@/helpers/tools";
 
 type GotchiCardProps = {
   gotchi: GotchiFieldsFragment;
   svg: SvgFieldsFragment | undefined;
+  withBorders?: boolean | undefined;
 };
 
-export const GotchiCard = (props: GotchiCardProps) => {
+export const GotchiCard = ({
+  gotchi,
+  svg,
+  withBorders = false,
+}: GotchiCardProps) => {
   return (
-    <div className="flex flex-col">
+    <div
+      className={classNames(
+        withBorders ? "p-3" : "",
+        "flex flex-col"
+      )}
+    >
       <div className="font-kanit text-sm text-center">
-        {`${props.gotchi?.name} (${props.gotchi?.modifiedRarityScore})`}{" "}
+        {`${gotchi?.name} (${gotchi?.modifiedRarityScore})`}{" "}
       </div>
-      {!!props.svg && (
+      {!!svg && (
         <div
           className="w-40 h-40"
           dangerouslySetInnerHTML={{
-            __html: props.svg?.svg ?? "empty",
+            __html: svg?.svg ?? "empty",
           }}
         />
       )}
       <div className="flex flex-col text-sm text-center">
         <div className="flex flex-row place-items-center justify-center mt-1">
-          <div className="w-1/2">{`KIN ${props.gotchi?.kinship}`}</div>
-          <div className="w-1/2">{`LVL ${props.gotchi?.level}`}</div>
+          <div className="w-1/2">{`KIN ${gotchi?.kinship}`}</div>
+          <div className="w-1/2">{`LVL ${gotchi?.level}`}</div>
         </div>
         <div className="flex flex-row place-items-center justify-center mt-1">
-          <div className="w-1/2">{`NRG ${props.gotchi?.modifiedNumericTraits[0]}`}</div>
-          <div className="w-1/2">{`AGG ${props.gotchi?.modifiedNumericTraits[1]}`}</div>
+          <div className="w-1/2">{`NRG ${gotchi?.modifiedNumericTraits[0]}`}</div>
+          <div className="w-1/2">{`AGG ${gotchi?.modifiedNumericTraits[1]}`}</div>
         </div>
         <div className="flex flex-row place-items-center justify-center mt-1">
-          <div className="w-1/2">{`SPK ${props.gotchi?.modifiedNumericTraits[0]}`}</div>
-          <div className="w-1/2">{`BRN ${props.gotchi?.modifiedNumericTraits[1]}`}</div>
+          <div className="w-1/2">{`SPK ${gotchi?.modifiedNumericTraits[0]}`}</div>
+          <div className="w-1/2">{`BRN ${gotchi?.modifiedNumericTraits[1]}`}</div>
         </div>
         <div className="flex flex-row place-items-center justify-center mt-1">
-          <div className="w-1/2">{`EYS ${props.gotchi?.modifiedNumericTraits[0]}`}</div>
-          <div className="w-1/2">{`EYC ${props.gotchi?.modifiedNumericTraits[1]}`}</div>
+          <div className="w-1/2">{`EYS ${gotchi?.modifiedNumericTraits[0]}`}</div>
+          <div className="w-1/2">{`EYC ${gotchi?.modifiedNumericTraits[1]}`}</div>
         </div>
       </div>
     </div>

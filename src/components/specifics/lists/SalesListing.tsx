@@ -1,10 +1,9 @@
 import { escrowAbi } from "@/abis/escrow";
-import { PortalFieldsFragment, PortalStatus, usePortalsByIdQuery, usePortalsQuery } from "@/graphql/core/__generated__/types";
 import { convertAddressType } from "@/helpers/tools";
-import { Sale, SaleContractResponse } from "@/types/types";
+import { Sale } from "@/types/types";
 import { readContract } from "@wagmi/core";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { readContracts, useAccount, useContractRead } from "wagmi";
+import { useAccount } from "wagmi";
 import { SalesPicker } from "./SalesPicker";
 import { TxContext } from "@/contexts/TxContext";
 

@@ -9,7 +9,7 @@ export const Header = () => {
       <div className="flex-none lg:w-1/4 md:w-1/6 md:block hidden"></div>
       <div className="grow flex justify-center place-items-center md:gap-x-10 gap-x-6 mx-2">
         <Link href="/">
-          <Image src="/images/logo.png" alt="logo" width={120} height={120} />
+          <Image src="/images/logo_v2.png" alt="logo" width={140} height={140} />
         </Link>
         <Link href="/">
           <div className="lg:text-7xl md:text-6xl text-5xl font-gotchi font-medium text-center text-white">

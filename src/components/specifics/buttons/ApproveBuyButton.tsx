@@ -7,7 +7,6 @@ import {
   SetStateAction,
   useContext,
   useEffect,
-  useState,
 } from "react";
 import {
   useAccount,
