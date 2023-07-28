@@ -1,15 +1,15 @@
-import { wearableNames } from "@/data/wearables";
-import {
-  classNames,
-  convertAddressType,
-  getWearableUri,
-} from "@/helpers/tools";
+// import { wearableNames } from "@/data/wearables";
+// import {
+//   classNames,
+//   convertAddressType,
+//   getWearableUri,
+// } from "@/helpers/tools";
 import { PickerProps, Wearable } from "@/types/types";
-import _ from "lodash";
-import { useEffect, useState } from "react";
-import { useAccount, useContractRead } from "wagmi";
-import { wearableAbi } from "@/abis/wearables";
-import { WearableCard } from "../cards/WearableCard";
+// import _ from "lodash";
+// import { useEffect, useState } from "react";
+// import { useAccount, useContractRead } from "wagmi";
+// import { wearableAbi } from "@/abis/wearables";
+// import { WearableCard } from "../cards/WearableCard";
 
 export const WearablePicker = (props: PickerProps) => {
   // const { address, isConnected } = useAccount();
