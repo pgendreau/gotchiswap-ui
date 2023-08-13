@@ -59,7 +59,7 @@ export const InjectWagmi = (props: PropsWithChildren) => {
           "--w3m-accent-fill-color": "#000000",
           "--w3m-overlay-background-color": "#3b0764",
           "--w3m-background-color": "#fff",
-          "--w3m-logo-image-url": "http://localhost:3000/images/wallet.png",
+          "--w3m-logo-image-url": "images/wallet.png",
         }}
       />
     </>
