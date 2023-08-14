@@ -14,4 +14,8 @@
   .btn-base {
     @apply rounded bg-purple-800 px-2 py-1 text-base font-semibold text-white shadow-sm hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-800;
   }
+
+  .btn-pink {
+    @apply rounded bg-purple-600 hover:bg-purple-500 focus-visible:outline-purple-600 px-2 py-1 text-base font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ;
+  }
 }

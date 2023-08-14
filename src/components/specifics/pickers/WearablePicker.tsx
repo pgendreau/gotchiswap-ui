@@ -143,19 +143,18 @@ export const WearablePicker = (props: PickerProps) => {
               ) >= 0
                 ? "bg-gotchi-500"
                 : "bg-purple-800",
-              "w-40 flex flex-col place-items-center"
             )}
           >
-            <WearableCard wearable={wearable} />
-            <div className="flex flex-row justify-center gap-2">
+            <WearableCard wearable={wearable} withBorders/>
+            <div className="flex flex-row justify-center gap-2 px-3 pb-2">
               {props.selectedAsset.findIndex(
                 (asset) =>
                   asset.id === wearable.id && asset.__typename === "wearable"
               ) >= 0 && (
-                <button onClick={() => handleMinusClick(wearable)}>-</button>
+                <button onClick={() => handleMinusClick(wearable)} className="btn-pink">-</button>
               )}
               {wearable.qty > 0 && (
-                <button onClick={() => handlePlusClick(wearable)}>+</button>
+                <button onClick={() => handlePlusClick(wearable)} className="btn-pink">+</button>
               )}
             </div>
           </div>

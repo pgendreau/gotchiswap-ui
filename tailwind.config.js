@@ -25,6 +25,9 @@ module.exports = {
             '900': '#7e1176',
             '950': '#55004f',
         },
+        'light-pink': '#FFE8FF',
+        'off-black': '#1A0335',
+        'g-yellow': '#FEF87D',
       }
     },
   },
