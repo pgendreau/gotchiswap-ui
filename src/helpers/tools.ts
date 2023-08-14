@@ -1,3 +1,5 @@
+import { SelectableAsset, Wearable } from "@/types/types"
+
 export const shortenAddress = (address: string | undefined) => address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ""
 
 export const classNames = (...classes: any[]): string => classes.filter(Boolean).join(' ')
@@ -18,4 +20,9 @@ export const readablePrice = (price: bigint | undefined): string => {
 
 export const isAddressValid = (address: string): boolean => {
   return address.length === 42 && address.startsWith('0x')
+}
+
+export const isWearable = (asset: SelectableAsset): asset is Wearable => {
+  return (asset.__typename === 'wearable')
+  // return (asset as Wearable)?.__typename === 'wearable'
 }

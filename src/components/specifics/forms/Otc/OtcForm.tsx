@@ -12,7 +12,7 @@ import { SelectableAsset } from "@/types/types";
 import { isAddressValid } from "@/helpers/tools";
 
 type OtcFormProps = {
-  selectedAsset: SelectableAsset | null;
+  selectedAsset: SelectableAsset[] | null;
   setEnablePicker: Dispatch<SetStateAction<boolean>>;
 }; 
 
@@ -54,9 +54,9 @@ export const OtcForm = (props: OtcFormProps) => {
             onChange={(e) => setPrice(parseInt(e.target.value))}
           />
         </div>
-        <ClientOnly>
+        {/* <ClientOnly>
         {isConnected && address ? 
-           ((props.selectedAsset?.id && isAddressValid(targetWallet) && price > 0) && (
+           ((props.selectedAsset?.length && isAddressValid(targetWallet) && price > 0) && (
               <div>
                 <ApproveOtcButton selectedAsset={props.selectedAsset} assetPrice={price} targetWallet={targetWallet} />
               </div>
@@ -64,7 +64,7 @@ export const OtcForm = (props: OtcFormProps) => {
           )) : (
             <Web3Button />
           )}
-        </ClientOnly>
+        </ClientOnly> */}
       </div>
     </>
   );

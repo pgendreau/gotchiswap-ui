@@ -6,8 +6,8 @@ import { Dispatch, SetStateAction } from "react";
 export type SelectableAsset = GotchiFieldsFragment | Wearable | PortalFieldsFragment
 
 export type PickerProps = {
-  selectedAsset: SelectableAsset | null;
-  setSelectedAsset: Dispatch<SetStateAction<SelectableAsset | null>>;
+  selectedAsset: SelectableAsset[];
+  setSelectedAsset: Dispatch<SetStateAction<SelectableAsset[]>>;
   enablePicker: boolean; 
 };
 
