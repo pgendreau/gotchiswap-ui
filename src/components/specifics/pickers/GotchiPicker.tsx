@@ -50,7 +50,7 @@ export const GotchiPicker = (props: GotchiPickerProps) => {
   return (
     <>
       {!!gotchis.data?.aavegotchis.length && (
-        <div className="lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white p-10">
+        <div className="lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white  pb-10 pl-5">
           {"G gotchis G"}
         </div>
       )}
@@ -62,8 +62,8 @@ export const GotchiPicker = (props: GotchiPickerProps) => {
             onClick={ () => handlePickerClick(gotchi)}
             className={classNames(
               props.selectedAsset.find(asset => asset?.id === gotchi.id)
-                ? "bg-gotchi-500"
-                : "bg-purple-800"
+              ? "bg-gradient-to-br from-gotchi-800  via-gotchi-500 to-g-yellow from-40% via-80% to-95%"
+              : "bg-gradient-to-br from-purple-800 via-purple-500 to-g-yellow from-40% via-80% to-95%",
             )}
           >
             <GotchiCard

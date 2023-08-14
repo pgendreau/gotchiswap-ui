@@ -31,7 +31,7 @@ export const OtcForm = (props: OtcFormProps) => {
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row justify-center place-items-center gap-y-2 lg:gap-x-10 leading-8">
+      <div className="flex flex-col lg:flex-row justify-center place-items-center gap-y-2 lg:gap-x-10 leading-8 pb-10">
         <div className="flex flex-col md:flex-row justify-center gap-y-2 md:gap-x-5 w-1/3">
           <label htmlFor="address">Address</label>
           <input
