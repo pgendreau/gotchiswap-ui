@@ -1,14 +1,10 @@
 import { GotchiFieldsFragment, PortalFieldsFragment } from "@/graphql/core/__generated__/types";
 import { SvgFieldsFragment } from "@/graphql/svg/__generated__/types";
-import { b } from "@wagmi/cli/dist/config-6e2b110a";
-import { Dispatch, SetStateAction } from "react";
 
-export type SelectableAsset = GotchiFieldsFragment | Wearable | PortalFieldsFragment
+export type SelectableAsset = Gotchi | GotchiFieldsFragment | Wearable | PortalFieldsFragment
 
 export type PickerProps = {
-  selectedAsset: SelectableAsset[];
-  setSelectedAsset: Dispatch<SetStateAction<SelectableAsset[]>>;
-  enablePicker: boolean; 
+  enablePicker: boolean;
 };
 
 export type Wearable = {
@@ -25,6 +21,10 @@ export type Sale = {
   assetId: bigint
   seller: string
   index: bigint
+}
+
+export type Gotchi = GotchiFieldsFragment & {
+  svg: SvgFieldsFragment
 }
 
 export type SaleContractResponse = [bigint, bigint, bigint, `0x${string}`]

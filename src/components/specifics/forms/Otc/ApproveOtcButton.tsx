@@ -1,9 +1,4 @@
 import { aavegotchiAbi } from "@/abis/aavegotchi";
-import { escrowAbi } from "@/abis/escrow";
-import {
-  GotchiFieldsFragment,
-  PortalFieldsFragment,
-} from "@/graphql/core/__generated__/types";
 import { convertAddressType } from "@/helpers/tools";
 import {
   useContractRead,
@@ -13,8 +8,9 @@ import {
 } from "wagmi";
 import { CreateOtcButton } from "./CreateOtcButton";
 import { SelectableAsset } from "@/types/types";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { TxContext, TxContextType } from "@/contexts/TxContext";
+import { CartContext } from "@/contexts/CartContext";
 
 type OtcButtonProps = {
   selectedAsset: SelectableAsset | null;
@@ -24,6 +20,7 @@ type OtcButtonProps = {
 
 export const ApproveOtcButton = (props: OtcButtonProps) => {
   const txContext = useContext(TxContext);
+  const cartCtx = useContext(CartContext);
 
   const { data, isSuccess, status } = useContractRead({
     address: convertAddressType(

@@ -7,12 +7,14 @@ import {
 } from "@/helpers/tools";
 import { PickerProps, Wearable } from "@/types/types";
 import _ from "lodash";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useAccount, useContractRead } from "wagmi";
 import { wearableAbi } from "@/abis/wearables";
 import { WearableCard } from "../cards/WearableCard";
+import { CartContext } from "@/contexts/CartContext";
 
 export const WearablePicker = (props: PickerProps) => {
+  const cartCtx = useContext(CartContext);
   const { address, isConnected } = useAccount();
   const [wearables, setWearables] = useState<Wearable[]>([]);
   const wearableIds = [..._.range(1, 315), ..._.range(350, 369)];
@@ -51,7 +53,7 @@ export const WearablePicker = (props: PickerProps) => {
     // First we check that picker is enabled and the item we want to add to the selected items has available quantity
     if (props.enablePicker && item.qty > 0) {
       // We need to duplicate the state array to avoid mutating it
-      const assetsCopy = [...props.selectedAsset];
+      const assetsCopy = [...cartCtx.assets];
       // If the asset is already in the array we will have to check quantity
       const assetIndex = assetsCopy.findIndex(
         (asset) => asset.id === item.id && asset.__typename === "wearable"
@@ -64,7 +66,7 @@ export const WearablePicker = (props: PickerProps) => {
         if (isWearable(asset)) {
           asset.qty += 1;
           assetsCopy[assetIndex] = asset;
-          props.setSelectedAsset(assetsCopy);
+          cartCtx.setAssets(assetsCopy);
           isDone = true;
         }
       } else {
@@ -72,7 +74,7 @@ export const WearablePicker = (props: PickerProps) => {
         const asset = { ...item };
         asset.qty = 1;
         assetsCopy.push(asset);
-        props.setSelectedAsset(assetsCopy);
+        cartCtx.setAssets(assetsCopy);
         isDone = true;
       }
       if (isDone) {
@@ -92,7 +94,7 @@ export const WearablePicker = (props: PickerProps) => {
   const handleMinusClick = (item: Wearable) => {
     if (props.enablePicker) {
       // We need to duplicate the state array to avoid mutating it
-      const assetsCopy = [...props.selectedAsset];
+      const assetsCopy = [...cartCtx.assets];
       // We check if the asset is in the array, should be always there
       const assetIndex = assetsCopy.findIndex(
         (asset) => asset.id === item.id && asset.__typename === "wearable"
@@ -109,7 +111,7 @@ export const WearablePicker = (props: PickerProps) => {
             assetsCopy[assetIndex] = item;
           }
           // We update the selected asset array state
-          props.setSelectedAsset(assetsCopy);
+          cartCtx.setAssets(assetsCopy);
         }
       }
       // When done removing, we need to add 1 from the item quantity in the available wearables state array
@@ -137,17 +139,17 @@ export const WearablePicker = (props: PickerProps) => {
             id={wearable.id.toString()}
             key={wearable.id}
             className={classNames(
-              props.selectedAsset.findIndex(
+              cartCtx.assets.findIndex(
                 (asset) =>
                   asset.id === wearable.id && asset.__typename === "wearable"
               ) >= 0
-                ? "bg-gradient-to-br from-gotchi-800  via-gotchi-500 to-g-yellow from-40% via-80% to-95%"
-                : "bg-gradient-to-br from-purple-800 via-purple-500 to-g-yellow from-40% via-80% to-95%",
+                ? "asset-selected"
+                : " asset",
             )}
           >
             <WearableCard wearable={wearable} withBorders/>
             <div className="flex flex-row justify-center gap-2 px-3 pb-2">
-              {props.selectedAsset.findIndex(
+              {cartCtx.assets.findIndex(
                 (asset) =>
                   asset.id === wearable.id && asset.__typename === "wearable"
               ) >= 0 && (
@@ -162,6 +164,4 @@ export const WearablePicker = (props: PickerProps) => {
       </div>
     </>
   );
-
-  return <></>;
 };

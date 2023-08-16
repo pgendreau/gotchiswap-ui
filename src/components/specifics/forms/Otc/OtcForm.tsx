@@ -10,20 +10,15 @@ import { Web3Button } from "@web3modal/react";
 import { ApproveOtcButton } from "./ApproveOtcButton";
 import { SelectableAsset } from "@/types/types";
 import { isAddressValid } from "@/helpers/tools";
+import { CartContext } from "@/contexts/CartContext";
 
 type OtcFormProps = {
   selectedAsset: SelectableAsset[] | null;
   setEnablePicker: Dispatch<SetStateAction<boolean>>;
 }; 
 
-type OtcFormValues = {
-  price: number;
-  address: string;
-};
-
 export const OtcForm = (props: OtcFormProps) => {
-  const txCtx = useContext(TxContext);
-  const modalCtx = useContext(ModalContext);
+  const cartCtx = useContext(CartContext);
   const { address, isConnected } = useAccount();
   const [submitted, setSubmitted] = useState(false);
   const [targetWallet, setTargetWallet] = useState("");
@@ -56,7 +51,7 @@ export const OtcForm = (props: OtcFormProps) => {
         </div>
         {/* <ClientOnly>
         {isConnected && address ? 
-           ((props.selectedAsset?.length && isAddressValid(targetWallet) && price > 0) && (
+           ((cartCtx.assets.length && isAddressValid(targetWallet) && price > 0) && (
               <div>
                 <ApproveOtcButton selectedAsset={props.selectedAsset} assetPrice={price} targetWallet={targetWallet} />
               </div>

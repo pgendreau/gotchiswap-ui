@@ -1,21 +1,41 @@
 import {
-  GotchiFieldsFragmentDoc,
+  PortalFieldsFragment,
   usePortalsQuery,
 } from "@/graphql/core/__generated__/types";
-import { GET_PORTALS } from "@/graphql/core/queries/portals";
-import { useGotchiSvgQuery } from "@/graphql/svg/__generated__/types";
 import { classNames } from "@/helpers/tools";
 import { PickerProps } from "@/types/types";
-import { useQuery } from "@apollo/client/react/hooks/useQuery";
 import { useAccount } from "wagmi";
 import { PortalCard } from "../cards/PortalCard";
+import { useContext } from "react";
+import { CartContext } from "@/contexts/CartContext";
 
 export const PortalPicker = (props: PickerProps) => {
+  const cartCtx = useContext(CartContext);
   const address = useAccount().address?.toLowerCase() ?? "";
   const portals = usePortalsQuery({
     variables: { owner: address },
     context: { clientName: "core" },
   });
+
+  const handleOnPickerClick = (portal: PortalFieldsFragment) => {
+    if (props.enablePicker) {
+      // Duplicate the state array to avoid mutating it
+      const assetsCopy = [...cartCtx.assets];
+      // If the asset is already in the array we will remove it
+      if (
+        assetsCopy.find(
+          (asset) => asset.id === portal.id && asset.__typename === "Portal"
+        )
+      ) {
+        cartCtx.setAssets(assetsCopy.filter((asset) => asset.id !== portal.id));
+      } else {
+        // Otherwise we will add it
+        const newArray = [...cartCtx.assets];
+        newArray.push(portal);
+        cartCtx.setAssets(newArray);
+      }
+    }
+  };
 
   return (
     <>
@@ -30,12 +50,14 @@ export const PortalPicker = (props: PickerProps) => {
           <div
             id={portal.id}
             key={portal.id}
-            onClick={() => props.enablePicker && props.setSelectedAsset(portal)}
+            onClick={() => handleOnPickerClick(portal)}
             className={classNames(
-              props.selectedAsset?.id === portal.id &&
-                props.selectedAsset.__typename === "Portal"
-                ? "bg-gotchi-500"
-                : "bg-purple-800"
+              cartCtx?.assets?.findIndex(
+                (asset) =>
+                  asset.id === portal.id && asset.__typename === "wearable"
+              ) >= 0
+                ? "asset-selected"
+                : "asset"
             )}
           >
             <PortalCard portal={portal} />

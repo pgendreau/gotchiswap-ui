@@ -18,4 +18,16 @@
   .btn-pink {
     @apply rounded bg-purple-600 hover:bg-purple-500 focus-visible:outline-purple-600 px-2 py-1 text-base font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ;
   }
+
+  .asset-selected {
+    @apply bg-gradient-to-br from-gotchi-800  via-gotchi-500 to-g-yellow from-40% via-80% to-95%
+  }
+
+  .asset {
+    @apply bg-gradient-to-br from-purple-800 via-purple-500 to-g-yellow from-40% via-80% to-95%
+  }
+
+  .section-title {
+    @apply lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white  pb-5 pl-5
+  }
 }
