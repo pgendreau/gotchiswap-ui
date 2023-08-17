@@ -1,9 +1,10 @@
 import { SectionTitle } from "@/components/generics/section/SectionTitle";
 import { CartContext } from "@/contexts/CartContext";
-import { useContext } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import { BaseCard } from "../cards/mini/BaseCard";
 import { CardLayout } from "../cards/mini/CardLayout";
 import { SelectableAsset } from "@/types/types";
+import { OtcWizardStatus } from "@/helpers/enums";
 
 const countCartItems = (cart: SelectableAsset[]): number => {
   const count = cart.reduce((acc, curr) => {
@@ -23,12 +24,19 @@ const displayCartCount = (cart: SelectableAsset[]): string => {
   return `(${count})`;
 };
 
-export const OtcCart = () => {
+export type OtcCartProps = {
+  wizardState: OtcWizardStatus;
+  setWizardState: Dispatch<SetStateAction<OtcWizardStatus>>;
+};
+
+export const OtcCart = (props: OtcCartProps) => {
   const cartCtx = useContext(CartContext);
 
   return (
     <div>
-      <SectionTitle>your cArt Y {displayCartCount(cartCtx.assets)}</SectionTitle>
+      <SectionTitle>
+        your cArt Y {displayCartCount(cartCtx.assets)}
+      </SectionTitle>
       {!cartCtx.assets.length ? (
         <div className="text-2xl">
           <p>You haven't selected any assets yet</p>
@@ -40,10 +48,32 @@ export const OtcCart = () => {
               <BaseCard asset={asset} />
             </CardLayout>
           ))}
-          { !!(cartCtx.assets.length > 0) && (
-            <button className='btn-pink object-cover w-20'>Next</button>
+          {!!(
+            cartCtx.assets.length > 0 &&
+            props.wizardState === OtcWizardStatus.SELECTING_ASSET
+          ) && (
+            <button
+              className="btn-pink object-cover w-20"
+              onClick={() => props.setWizardState(OtcWizardStatus.APPROVING)}
+            >
+              Next
+            </button>
           )}
-          </div>
+          {props.wizardState !== OtcWizardStatus.SELECTING_ASSET && (
+            <button
+              className="btn-pink object-cover w-20"
+              onClick={() => {
+                if (props.wizardState === OtcWizardStatus.APPROVING) {
+                  props.setWizardState(OtcWizardStatus.SELECTING_ASSET);
+                } else if (props.wizardState === OtcWizardStatus.CREATING) {
+                  props.setWizardState(OtcWizardStatus.APPROVING);
+                }
+              }}
+            >
+              Back
+            </button>
+          )}
+        </div>
       )}
     </div>
   );

@@ -6,10 +6,13 @@ import { PortalPicker } from "@/components/specifics/pickers/PortalPicker";
 import { WearablePicker } from "@/components/specifics/pickers/WearablePicker";
 import { CartContext, CartContextProvider } from "@/contexts/CartContext";
 import { OtcCart } from "@/components/specifics/cart/OtcCart";
+import { OtcWizardStatus } from "@/helpers/enums";
 
 const New = () => {
-  const [selectedAsset, setSelectedAsset] = useState<SelectableAsset[]>([]);
   const [enablePicker, setEnablePicker] = useState<boolean>(true);
+  const [wizardState, setWizardState] = useState<OtcWizardStatus>(
+    OtcWizardStatus.SELECTING_ASSET
+  );
 
   return (
     <CartContextProvider>
@@ -20,28 +23,26 @@ const New = () => {
             clicks on the Next button to proceed.
           </p>
         </div>
-        <OtcCart />
-        {/* <div>
-          <OtcForm
-            selectedAsset={selectedAsset}
-            setEnablePicker={setEnablePicker}
-          />
-        </div> */}
-        <div>
-          <GotchiPicker
-            enablePicker={enablePicker}
-          />
-        </div>
-        <div>
-          <PortalPicker
-            enablePicker={enablePicker}
-          />
-        </div>
-        <div>
-          <WearablePicker
-            enablePicker={enablePicker}
-          />
-        </div>
+        <OtcCart wizardState={wizardState} setWizardState={setWizardState} />
+        {(wizardState === OtcWizardStatus.APPROVING ||
+          wizardState === OtcWizardStatus.CREATING) && (
+          <div>
+            <OtcForm setEnablePicker={setEnablePicker} />
+          </div>
+        )}
+        {wizardState === OtcWizardStatus.SELECTING_ASSET && (
+          <>
+            <div>
+              <GotchiPicker enablePicker={enablePicker} />
+            </div>
+            <div>
+              <PortalPicker enablePicker={enablePicker} />
+            </div>
+            <div>
+              <WearablePicker enablePicker={enablePicker} />
+            </div>
+          </>
+        )}
       </div>
     </CartContextProvider>
   );

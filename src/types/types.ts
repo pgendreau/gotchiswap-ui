@@ -26,7 +26,10 @@ export type Gotchi = GotchiFieldsFragment & {
   svg: SvgFieldsFragment
 }
 
+export type ApprovableAsset = (Gotchi | Wearable | PortalFieldsFragment) & { approved: boolean }
+
 export type SaleContractResponse = [bigint, bigint, bigint, `0x${string}`]
 
-// export type SaleWithAsset = Sale & { asset: GotchiFieldsFragment | PortalFieldsFragment, svg: SvgFieldsFragment | undefined }
 export type SaleWithAsset = Sale & { assets: SelectableAsset[] }
+
+

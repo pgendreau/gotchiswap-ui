@@ -13,7 +13,6 @@ import { isAddressValid } from "@/helpers/tools";
 import { CartContext } from "@/contexts/CartContext";
 
 type OtcFormProps = {
-  selectedAsset: SelectableAsset[] | null;
   setEnablePicker: Dispatch<SetStateAction<boolean>>;
 }; 
 
