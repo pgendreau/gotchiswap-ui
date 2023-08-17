@@ -15,10 +15,10 @@ export const WearableCard = ({
     <div
       className={classNames(
         withBorders ? "p-3" : "",
-        "w-48 flex flex-col place-items-center"
+        "w-32 md:w-48 flex flex-col place-items-center"
       )}
     >
-      <div className="text-center">{wearable?.name}</div>
+      <div className="text-center text-sm">{wearable?.name}</div>
       <Image
         src={wearable.uri}
         width={120}

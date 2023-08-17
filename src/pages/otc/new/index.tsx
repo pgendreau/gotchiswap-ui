@@ -17,17 +17,16 @@ const New = () => {
         <div className="text-2xl">
           <p>
             To create an OTC deal, just pick the asset you want to sell. Then
-            enters a price (in GHST). And finally enter the address of the
-            wallet you want to sold your asset to
+            clicks on the Next button to proceed.
           </p>
         </div>
         <OtcCart />
-        <div>
+        {/* <div>
           <OtcForm
             selectedAsset={selectedAsset}
             setEnablePicker={setEnablePicker}
           />
-        </div>
+        </div> */}
         <div>
           <GotchiPicker
             enablePicker={enablePicker}

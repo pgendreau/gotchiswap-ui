@@ -28,6 +28,6 @@
   }
 
   .section-title {
-    @apply lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white  pb-5 pl-5
+    @apply lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white  pb-5
   }
 }

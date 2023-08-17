@@ -22,7 +22,7 @@ export const GotchiCard = ({
       </div>
       {!!gotchi.svg && (
         <div
-          className="w-40 h-40"
+          className="md:w-40 md:h-40 w-30"
           dangerouslySetInnerHTML={{
             __html: gotchi.svg?.svg ?? "empty",
           }}
