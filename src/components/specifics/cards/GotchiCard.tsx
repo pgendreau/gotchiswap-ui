@@ -1,16 +1,13 @@
-import { GotchiFieldsFragment } from "@/graphql/core/__generated__/types";
-import { SvgFieldsFragment } from "@/graphql/svg/__generated__/types";
 import { classNames } from "@/helpers/tools";
+import { Gotchi } from "@/types/types";
 
 type GotchiCardProps = {
-  gotchi: GotchiFieldsFragment;
-  svg: SvgFieldsFragment | undefined;
+  gotchi: Gotchi;
   withBorders?: boolean | undefined;
 };
 
 export const GotchiCard = ({
   gotchi,
-  svg,
   withBorders = false,
 }: GotchiCardProps) => {
   return (
@@ -23,11 +20,11 @@ export const GotchiCard = ({
       <div className="font-kanit text-sm text-center">
         {`${gotchi?.name} (${gotchi?.modifiedRarityScore})`}{" "}
       </div>
-      {!!svg && (
+      {!!gotchi.svg && (
         <div
           className="w-40 h-40"
           dangerouslySetInnerHTML={{
-            __html: svg?.svg ?? "empty",
+            __html: gotchi.svg?.svg ?? "empty",
           }}
         />
       )}

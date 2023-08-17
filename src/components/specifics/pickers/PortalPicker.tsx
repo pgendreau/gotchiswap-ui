@@ -8,6 +8,7 @@ import { useAccount } from "wagmi";
 import { PortalCard } from "../cards/PortalCard";
 import { useContext } from "react";
 import { CartContext } from "@/contexts/CartContext";
+import { SectionTitle } from "@/components/generics/section/SectionTitle";
 
 export const PortalPicker = (props: PickerProps) => {
   const cartCtx = useContext(CartContext);
@@ -40,9 +41,9 @@ export const PortalPicker = (props: PickerProps) => {
   return (
     <>
       {!!portals.data?.portals.length && (
-        <div className="lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white p-10">
+        <SectionTitle>
           {"X Portals X"}
-        </div>
+        </SectionTitle>
       )}
 
       <div className="flex flex-row flex-wrap justify-center gap-5">

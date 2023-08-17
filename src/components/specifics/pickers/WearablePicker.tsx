@@ -130,7 +130,7 @@ export const WearablePicker = (props: PickerProps) => {
     <>
       {!!wearables.length && (
         <div className="lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white pb-10 pl-5">
-          {"V wearAbles R"}
+          {"wearAbles R V"}
         </div>
       )}
       <div className="flex flex-row flex-wrap justify-center gap-5">

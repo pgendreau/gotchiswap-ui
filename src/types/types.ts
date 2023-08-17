@@ -1,8 +1,7 @@
 import { GotchiFieldsFragment, PortalFieldsFragment } from "@/graphql/core/__generated__/types";
 import { SvgFieldsFragment } from "@/graphql/svg/__generated__/types";
 
-export type SelectableAsset = Gotchi | GotchiFieldsFragment | Wearable | PortalFieldsFragment
-
+export type SelectableAsset = Gotchi | Wearable | PortalFieldsFragment /* | GotchiFieldsFragment */
 export type PickerProps = {
   enablePicker: boolean;
 };
@@ -29,4 +28,5 @@ export type Gotchi = GotchiFieldsFragment & {
 
 export type SaleContractResponse = [bigint, bigint, bigint, `0x${string}`]
 
-export type SaleWithAsset = Sale & { asset: GotchiFieldsFragment | PortalFieldsFragment, svg: SvgFieldsFragment | undefined }
+// export type SaleWithAsset = Sale & { asset: GotchiFieldsFragment | PortalFieldsFragment, svg: SvgFieldsFragment | undefined }
+export type SaleWithAsset = Sale & { assets: SelectableAsset[] }

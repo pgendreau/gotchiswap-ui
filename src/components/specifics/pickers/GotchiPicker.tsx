@@ -9,6 +9,7 @@ import { useContext, useState } from "react";
 import { useAccount } from "wagmi";
 import { GotchiCard } from "../cards/GotchiCard";
 import { CartContext } from "@/contexts/CartContext";
+import { SectionTitle } from "@/components/generics/section/SectionTitle";
 
 export const GotchiPicker = (props: PickerProps) => {
   const cartCtx = useContext(CartContext);
@@ -40,7 +41,7 @@ export const GotchiPicker = (props: PickerProps) => {
 
 
 
-  const handlePickerClick = (gotchi: GotchiFieldsFragment) => {
+  const handlePickerClick = (gotchi: Gotchi) => {
     if (props.enablePicker) {
       // If the asset is already in the array we will remove it
       // Otherwise we will add it
@@ -59,12 +60,12 @@ export const GotchiPicker = (props: PickerProps) => {
   return (
     <>
       {!!gotchis.data?.aavegotchis.length && (
-        <div className="lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white  pb-10 pl-5">
-          {"G gotchis G"}
-        </div>
+        <SectionTitle>
+         {"gotchis G"}
+        </SectionTitle>
       )}
       <div className="flex flex-row flex-wrap justify-center gap-5">
-        {gotchis.data?.aavegotchis.map((gotchi) => (
+        {gotchisWithSvg.map((gotchi) => (
           <div
             id={gotchi.id}
             key={gotchi.id}
@@ -80,9 +81,6 @@ export const GotchiPicker = (props: PickerProps) => {
           >
             <GotchiCard
               gotchi={gotchi}
-              svg={svgs.data?.aavegotchis?.find(
-                (svg) => svg?.id === gotchi?.id
-              )}
               withBorders
             />
           </div>
