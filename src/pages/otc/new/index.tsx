@@ -7,6 +7,7 @@ import { WearablePicker } from "@/components/specifics/pickers/WearablePicker";
 import { CartContext, CartContextProvider } from "@/contexts/CartContext";
 import { OtcCart } from "@/components/specifics/cart/OtcCart";
 import { OtcWizardStatus } from "@/helpers/enums";
+import { CheckApproval } from "@/components/specifics/pages/otc/new/CheckApproval";
 
 const New = () => {
   const [enablePicker, setEnablePicker] = useState<boolean>(true);
@@ -24,11 +25,11 @@ const New = () => {
           </p>
         </div>
         <OtcCart wizardState={wizardState} setWizardState={setWizardState} />
-        {(wizardState === OtcWizardStatus.APPROVING ||
-          wizardState === OtcWizardStatus.CREATING) && (
-          <div>
-            <OtcForm setEnablePicker={setEnablePicker} />
-          </div>
+        {wizardState === OtcWizardStatus.APPROVING && (
+          <CheckApproval wizardState={wizardState} setWizardState={setWizardState} />
+        )}
+        {wizardState === OtcWizardStatus.CREATING && (
+          <OtcForm setEnablePicker={setEnablePicker} />
         )}
         {wizardState === OtcWizardStatus.SELECTING_ASSET && (
           <>

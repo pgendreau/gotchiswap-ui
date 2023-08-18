@@ -5,6 +5,7 @@ import { BaseCard } from "../cards/mini/BaseCard";
 import { CardLayout } from "../cards/mini/CardLayout";
 import { SelectableAsset } from "@/types/types";
 import { OtcWizardStatus } from "@/helpers/enums";
+import { Loader } from "@/components/generics/loaders/Loader";
 
 const countCartItems = (cart: SelectableAsset[]): number => {
   const count = cart.reduce((acc, curr) => {
