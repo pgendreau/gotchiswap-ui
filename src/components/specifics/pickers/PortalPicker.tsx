@@ -41,9 +41,7 @@ export const PortalPicker = (props: PickerProps) => {
   return (
     <>
       {!!portals.data?.portals.length && (
-        <SectionTitle>
-          {"X Portals X"}
-        </SectionTitle>
+        <SectionTitle>{"X Portals X"}</SectionTitle>
       )}
 
       <div className="flex flex-row flex-wrap justify-center gap-5">

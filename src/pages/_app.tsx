@@ -7,21 +7,24 @@ import { InjectWagmi } from "@/components/hoc/wagmi";
 import { TxModal } from "@/components/specifics/modals/TxModal";
 import { TxContextProvider } from "@/contexts/TxContext";
 import { ModalContextProvider } from "@/contexts/ModalContext";
+import { CartContextProvider } from "@/contexts/CartContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <InjectApollo>
       <InjectWagmi>
-        <TxContextProvider>
-          <ModalContextProvider>
-            <Layout>
-              <>
-                <Component {...pageProps} />
-                <TxModal />
-              </>
-            </Layout>
-          </ModalContextProvider>
-        </TxContextProvider>
+        <CartContextProvider>
+          <TxContextProvider>
+            <ModalContextProvider>
+              <Layout>
+                <>
+                  <Component {...pageProps} />
+                  <TxModal />
+                </>
+              </Layout>
+            </ModalContextProvider>
+          </TxContextProvider>
+        </CartContextProvider>
       </InjectWagmi>
     </InjectApollo>
   );

@@ -36,7 +36,7 @@ export const OtcCart = (props: OtcCartProps) => {
   return (
     <div>
       <SectionTitle>
-        your cArt Y {displayCartCount(cartCtx.assets)}
+        your selection Y {displayCartCount(cartCtx.assets)}
       </SectionTitle>
       {!cartCtx.assets.length ? (
         <div className="text-2xl">

@@ -1,25 +1,25 @@
 import { Fragment, useContext, useEffect, useState } from "react";
-import { TxContext } from "@/contexts/TxContext";
+import { TxContext, TxContextType } from "@/contexts/TxContext";
 import { shortenAddress } from "@/helpers/tools";
 import { Transition, Dialog } from "@headlessui/react";
 
-export const TxModal = () => {
-  const ctx = useContext(TxContext);
+export const TxModal2 = (props: { txContext: TxContextType }) => {
+  // const ctx = useContext(TxContext);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    console.log('Modal UseEffect', ctx.txContextValue.status)
+    console.log("Modal UseEffect", props.txContext.status);
     if (
-      ctx.txContextValue &&
-      ctx.txContextValue.status &&
-      ctx.txContextValue.status !== "success" &&
-      ctx.txContextValue.status !== "idle"
+      props.txContext &&
+      props.txContext.status &&
+      props.txContext.status !== "success" &&
+      props.txContext.status !== "idle"
     ) {
       setOpen(true);
     } else {
       setOpen(false);
     }
-  }, [ctx?.txContextValue]);
+  }, [props.txContext]);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -58,18 +58,17 @@ export const TxModal = () => {
                     </Dialog.Title>
                     <div className="mt-2 text-white">
                       <div className="flex flex-col gap-y-3">
-                        <div>{ctx && ctx.txContextValue.operation}</div>
-                        <div>Tx status: {ctx && ctx.txContextValue.status}</div>
-                        {ctx && (
-                          <div>
-                            <a
-                              href={`https://polygonscan.com/tx/${ctx.txContextValue.hash}`}
-                              target="_blank"
-                            >
-                              Tx hash: {shortenAddress(ctx.txContextValue.hash)}
-                            </a>
-                          </div>
-                        )}
+                        <div>{props.txContext.operation}</div>
+                        <div>Tx status: {props.txContext.status}</div>
+
+                        <div>
+                          <a
+                            href={`https://polygonscan.com/tx/${props.txContext.hash}`}
+                            target="_blank"
+                          >
+                            Tx hash: {shortenAddress(props.txContext.hash)}
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>

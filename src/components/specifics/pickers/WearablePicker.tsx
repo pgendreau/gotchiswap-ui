@@ -144,19 +144,29 @@ export const WearablePicker = (props: PickerProps) => {
                   asset.id === wearable.id && asset.__typename === "wearable"
               ) >= 0
                 ? "asset-selected"
-                : " asset",
+                : " asset"
             )}
           >
-            <WearableCard wearable={wearable} withBorders/>
+            <WearableCard wearable={wearable} withBorders />
             <div className="flex flex-row justify-center gap-2 px-3 pb-2">
               {cartCtx.assets.findIndex(
                 (asset) =>
                   asset.id === wearable.id && asset.__typename === "wearable"
               ) >= 0 && (
-                <button onClick={() => handleMinusClick(wearable)} className="btn-pink">-</button>
+                <button
+                  onClick={() => handleMinusClick(wearable)}
+                  className="btn-pink"
+                >
+                  -
+                </button>
               )}
               {wearable.qty > 0 && (
-                <button onClick={() => handlePlusClick(wearable)} className="btn-pink">+</button>
+                <button
+                  onClick={() => handlePlusClick(wearable)}
+                  className="btn-pink"
+                >
+                  +
+                </button>
               )}
             </div>
           </div>

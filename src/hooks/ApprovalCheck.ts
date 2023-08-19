@@ -8,39 +8,35 @@ import { convertAddressType, isWearable } from "../helpers/tools";
 import { useAccount } from "wagmi";
 import { CartContext } from "@/contexts/CartContext";
 
-const AavegotchiContract = {
+const aavegotchiContract = {
   address: convertAddressType(process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS),
   abi: aavegotchiAbi
 }
 
-const WearableContract = {
+const wearableContract = {
   address: convertAddressType(process.env.NEXT_PUBLIC_WEARABLE_CONTRACT_ADDRESS),
   abi: wearableAbi
 }
 
-export const useApprovalCheck = (): { approvableAssets: ApprovableAsset[], status: TxStatus } => {
-  const [approvableAssets, setApprovableAssets] = useState<ApprovableAsset[]>([]);
+export const useApprovalCheck = (): { status: TxStatus } => {
   const [status, setStatus] = useState<TxStatus>(TxStatus.LOADING);
   const { address } = useAccount();
   const cartCtx = useContext(CartContext);
 
   useEffect(() => {
     const processApproval = async () => {
+      console.log('check approval async')
       const gotchis: ApprovableAsset[] = cartCtx.assets
         .filter((asset) => asset.__typename === "Aavegotchi" || asset.__typename === "Portal")
-        .map((gotchi) => { return { ...gotchi, approved: false } });
 
       const wearables: ApprovableAsset[] = cartCtx.assets
         .filter((asset) => isWearable(asset))
-        .map((wearable) => {
-          return { ...wearable, approved: false }
-        })
 
       const calls: any[] = []
 
       const gotchiCalls = gotchis.map((gotchi) => {
         return {
-          ...AavegotchiContract,
+          ...aavegotchiContract,
           functionName: 'getApproved',
           args: [BigInt(gotchi.id)]
         }
@@ -49,7 +45,7 @@ export const useApprovalCheck = (): { approvableAssets: ApprovableAsset[], statu
 
       if (wearables.length > 0) {
         calls.push({
-          ...WearableContract,
+          ...wearableContract,
           functionName: 'isApprovedForAll',
           args: [address, process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS]
         })
@@ -59,7 +55,7 @@ export const useApprovalCheck = (): { approvableAssets: ApprovableAsset[], statu
         await multicall({
           contracts: calls
         }).then((results) => {
-          setStatus(TxStatus.SUCCESS);
+//          setStatus(TxStatus.SUCCESS);
           let isWearablesHandled = false
           const tmp: ApprovableAsset[] = []
           cartCtx.assets.forEach((asset, index) => {
@@ -80,16 +76,16 @@ export const useApprovalCheck = (): { approvableAssets: ApprovableAsset[], statu
                 break
             }
           })
-          setApprovableAssets(tmp)
+          cartCtx.setAssets(tmp)
         })
       } catch (error) {
-        setStatus(TxStatus.ERROR);
+//        setStatus(TxStatus.ERROR);
       }
     }
     processApproval()
-  }, [cartCtx.assets]);
+  }, [cartCtx, status, setStatus, aavegotchiContract, wearableContract, multicall, console.log]);
 
-  return { approvableAssets, status };
+  return { status };
 }
 
 

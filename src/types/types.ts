@@ -26,9 +26,9 @@ export type Gotchi = GotchiFieldsFragment & {
   svg: SvgFieldsFragment
 }
 
-export type ApprovableWearable = Wearable & { approved: boolean }
-export type ApprovableGotchi = Gotchi & { approved: boolean }
-export type ApprovablePortal = PortalFieldsFragment & { approved: boolean }
+export type ApprovableWearable = Wearable & { approved?: boolean }
+export type ApprovableGotchi = Gotchi & { approved?: boolean }
+export type ApprovablePortal = PortalFieldsFragment & { approved?: boolean }
 export type ApprovableAsset = ApprovableGotchi | ApprovableWearable | ApprovablePortal
 
 export type SaleContractResponse = [bigint, bigint, bigint, `0x${string}`]

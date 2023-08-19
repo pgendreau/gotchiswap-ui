@@ -18,7 +18,7 @@ export type TxContextType = {
 export const txContextDefaultValue: TxContextType = {
   operation: '',
   hash: undefined,
-  status: undefined
+  status: 'idle'
 };
 
 // The context itself

@@ -1,4 +1,4 @@
-import { SelectableAsset } from "@/types/types";
+import { ApprovableAsset, SelectableAsset } from "@/types/types";
 import {
   PropsWithChildren,
   createContext,
@@ -11,10 +11,10 @@ import {
 // The context itself
 // Note the undefined! type assertion. This is a non-null assertion operator. It tells the compiler that the value is not null or undefined.
 // That trick prevents the compiler from complaining about the value being undefined. 
-export const CartContext = createContext<{assets: SelectableAsset[]; setAssets: Dispatch<SetStateAction<SelectableAsset[]>>;}>(undefined!);
+export const CartContext = createContext<{assets: ApprovableAsset[]; setAssets: Dispatch<SetStateAction<ApprovableAsset[]>>;}>(undefined!);
 
 export const CartContextProvider = (props: PropsWithChildren) => {
-  const [assets, setAssets] = useState<SelectableAsset[]>([]);
+  const [assets, setAssets] = useState<ApprovableAsset[]>([]);
   return (
     <CartContext.Provider value={{ assets, setAssets }}>
       {props.children}
