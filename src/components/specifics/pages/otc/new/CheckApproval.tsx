@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { useApprovalCheck } from "@/hooks/ApprovalCheck";
 import { CartContext } from "@/contexts/CartContext";
 import { Loader } from "@/components/generics/loaders/Loader";
+import { ExecApproval } from "./ExecApproval";
 
 type CheckApprovalProps = {
   wizardState: OtcWizardStatus;
@@ -11,12 +12,14 @@ type CheckApprovalProps = {
 };
 
 export const CheckApproval = (props: CheckApprovalProps) => {
+  const [approveTxStarted, setApproveTxStarted] = useState<boolean>(false)
   const cartCtx = useContext(CartContext);
-  const { approvableAssets, status } = useApprovalCheck(cartCtx.assets);
+  const { approvableAssets, status } = useApprovalCheck();
+
 
   // We need to check if all items are approved after each render
   // In that case we change wizard status
-  if  (cartCtx.assets.length === approvableAssets.length && approvableAssets.findIndex(asset => asset.approved) > -1) {
+  if  (cartCtx.assets.length === approvableAssets.filter(asset => asset.approved).length) {
     props.setWizardState(OtcWizardStatus.CREATING)
   }
 
@@ -44,7 +47,14 @@ export const CheckApproval = (props: CheckApprovalProps) => {
               (asset) => !asset.approved && asset.__typename === "wearable"
             ) > -1 && <li className="font-kanit before:content-['V.'] before:font-gotchi before:mr-1">Wearables need to be approved</li>}
           </ul>
-          
+          { approvableAssets.findIndex(asset => !asset.approved) > -1 && !approveTxStarted && (
+            <button className='btn-pink' onClick={() => {setApproveTxStarted(true)}}>
+              Approuver
+            </button>
+          )}
+          { approveTxStarted && (
+            <ExecApproval approvableAssets={approvableAssets} />
+          )}
         </div>
       )}
     </>

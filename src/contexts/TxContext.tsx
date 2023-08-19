@@ -11,7 +11,7 @@ import {
 export type TxContextType = {
   operation: string
   hash: `0x${string}` | undefined;
-  status: "error" | "idle" | "loading" | "success" | undefined;
+  status: "error" | "idle" | "waiting" | "loading" | "success" | undefined;
 };
 
 // Empty context value for setup
@@ -22,7 +22,7 @@ export const txContextDefaultValue: TxContextType = {
 };
 
 // The context itself
-export const TxContext = createContext<{txContextValue: TxContextType; setTxContextValue: Dispatch<SetStateAction<TxContextType>>;} | null>(null);
+export const TxContext = createContext<{txContextValue: TxContextType; setTxContextValue: Dispatch<SetStateAction<TxContextType>>;}>(undefined!);
 
 // The context provider
 // By embedding a state in the context, we can use it to read / write the status of the Tx in any component through useContext function

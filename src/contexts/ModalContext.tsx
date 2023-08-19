@@ -8,7 +8,7 @@ import {
 
 
 // The context itself
-export const ModalContext = createContext<{open: boolean; setOpen: Dispatch<SetStateAction<boolean>>;} | null>(null);
+export const ModalContext = createContext<{open: boolean; setOpen: Dispatch<SetStateAction<boolean>>;}>(undefined!);
 
 // The context provider
 // By embedding a state in the context, we can use it to read / write the status of the Tx in any component through useContext function

@@ -28,9 +28,9 @@ const New = () => {
         {wizardState === OtcWizardStatus.APPROVING && (
           <CheckApproval wizardState={wizardState} setWizardState={setWizardState} />
         )}
-        {wizardState === OtcWizardStatus.CREATING && (
+        {/* {wizardState === OtcWizardStatus.CREATING && (
           <OtcForm setEnablePicker={setEnablePicker} />
-        )}
+        )} */}
         {wizardState === OtcWizardStatus.SELECTING_ASSET && (
           <>
             <div>
