@@ -1,6 +1,7 @@
 import { GotchiFieldsFragment, PortalFieldsFragment } from "@/graphql/core/__generated__/types";
 import { SvgFieldsFragment } from "@/graphql/svg/__generated__/types";
-import { TxStatus } from "@/helpers/enums";
+import { AssetClass, TxStatus } from "@/helpers/enums";
+import exp from "constants";
 
 export type SelectableAsset = Gotchi | Wearable | PortalFieldsFragment /* | GotchiFieldsFragment */
 export type PickerProps = {
@@ -22,6 +23,25 @@ export type Sale = {
   seller: string
   index: bigint
 }
+
+export type SaleItem = {
+  id: bigint
+  class: AssetClass
+  amount: bigint
+  contract: string
+}
+
+
+export type SaleV2 = {
+  id: bigint
+  index: bigint
+  buyer: string
+  seller: string | undefined
+  assets: SaleItem[]
+  prices: SaleItem[]
+}
+
+
 
 export type Gotchi = GotchiFieldsFragment & {
   svg: SvgFieldsFragment

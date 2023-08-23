@@ -4,16 +4,18 @@ import { Gotchi } from "@/types/types";
 type GotchiCardProps = {
   gotchi: Gotchi;
   withBorders?: boolean | undefined;
+  withBackground?: boolean | undefined;
 };
 
 export const GotchiCard = ({
   gotchi,
   withBorders = false,
+  withBackground = false,
 }: GotchiCardProps) => {
   return (
     <div
       className={classNames(
-        withBorders ? "p-3" : "",
+        withBorders ? "p-3" : "", withBackground ? 'asset' : "",
         "flex flex-col"
       )}
     >

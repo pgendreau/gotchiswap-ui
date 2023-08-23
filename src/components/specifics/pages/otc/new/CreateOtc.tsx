@@ -200,40 +200,7 @@ const TxButton = (props: {
     };
   }
 
-//   Modal UseEffect 4
-// TxModal.tsx:14 Modal UseEffect 1
-// client.js:1 Warning: Cannot update a component (`CartContextProvider`) while rendering a different component (`TxButton`). To locate the bad setState() call inside `TxButton`, follow the stack trace as described in https://reactjs.org/link/setstate-in-render
-//     at TxButton (webpack-internal:///./src/components/specifics/pages/otc/new/CreateOtc.tsx:185:70)
-//     at div
-//     at CreateOtc (webpack-internal:///./src/components/specifics/pages/otc/new/CreateOtc.tsx:79:86)
-//     at div
-//     at NewContent (webpack-internal:///./src/pages/otc/new/index.tsx:30:92)
-//     at OtcWizardContextProvider (webpack-internal:///./src/contexts/WizardContext.tsx:20:80)
-//     at New
-//     at div
-//     at div
-//     at div
-//     at Layout (webpack-internal:///./src/components/layout/index.tsx:24:37)
-//     at ModalContextProvider (webpack-internal:///./src/contexts/ModalContext.tsx:18:76)
-//     at TxContextProvider (webpack-internal:///./src/contexts/TxContext.tsx:20:96)
-//     at CartContextProvider (webpack-internal:///./src/contexts/CartContext.tsx:18:80)
-//     at QueryClientProvider (webpack-internal:///./node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs:48:3)
-//     at WagmiConfig (webpack-internal:///./node_modules/wagmi/dist/index.js:134:3)
-//     at InjectWagmi (webpack-internal:///./src/components/hoc/wagmi/index.tsx:55:33)
-//     at ApolloProvider (webpack-internal:///./node_modules/@apollo/client/react/context/ApolloProvider.js:12:21)
-//     at InjectApollo (webpack-internal:///./src/components/hoc/apollo/index.tsx:26:25)
-//     at App (webpack-internal:///./src/pages/_app.tsx:28:11)
-//     at PathnameContextProviderAdapter (webpack-internal:///./node_modules/next/dist/shared/lib/router/adapters.js:74:11)
-//     at ErrorBoundary (webpack-internal:///./node_modules/next/dist/compiled/@next/react-dev-overlay/dist/client.js:306:63)
-//     at ReactDevOverlay (webpack-internal:///./node_modules/next/dist/compiled/@next/react-dev-overlay/dist/client.js:858:919)
-//     at Container (webpack-internal:///./node_modules/next/dist/client/index.js:92:1)
-//     at AppContainer (webpack-internal:///./node_modules/next/dist/client/index.js:197:11)
-//     at Root (webpack-internal:///./node_modules/next/dist/client/index.js:380:11)
-
-
   if (txWaitData.isSuccess) {
-    //cartCtx.setAssets([]);
-    //wizardCtx.setStatus(OtcWizardStatus.CREATED);
     router.push("/otc/success");
   }
 

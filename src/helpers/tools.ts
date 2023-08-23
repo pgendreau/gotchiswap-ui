@@ -1,4 +1,4 @@
-import { SelectableAsset, Wearable } from "@/types/types"
+import { SaleItem, SelectableAsset, Wearable } from "@/types/types"
 import { TxStatus } from "./enums"
 
 /**
@@ -64,12 +64,17 @@ export const isWearable = (asset: SelectableAsset): asset is Wearable => {
 }
 
 /**
- * basic delay helper
+ * @description basic delay helper
  * @param ms 
  * @returns Promise 
  */
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/**
+ * @description Helper to convert tx status string to enum
+ * @param status 
+ * @returns 
+ */
 export const convertTxStatus = (status: string): TxStatus => {
   switch (status) {
     case 'success':
@@ -82,5 +87,22 @@ export const convertTxStatus = (status: string): TxStatus => {
       return TxStatus.LOADING
     default:
       return TxStatus.IDLE
+  }
+}
+
+/**
+ * @desription basic DTO for sale items returned by the contract
+ * @param type 
+ * @param contract 
+ * @param id 
+ * @param amount 
+ * @returns 
+ */
+export const saleItemDTO = (type: 0|1|2, contract: string, id: bigint, amount: bigint): SaleItem => {
+  return {
+    class: type,
+    contract,
+    id,
+    amount
   }
 }

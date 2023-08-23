@@ -1,5 +1,5 @@
 import { BuysListing } from "@/components/specifics/lists/BuysListing";
-import { SalesListing } from "@/components/specifics/lists/SalesListing";
+import { SalesLoader } from "@/components/specifics/lists/SalesLoader";
 
 const Sales = () => {
   return (
@@ -11,7 +11,7 @@ const Sales = () => {
       <div className="text-2xl">
         <p>OTC deals that you have created with the dapp.</p>
       </div>
-      <SalesListing />
+      <SalesLoader />
     </div>
   );
 };

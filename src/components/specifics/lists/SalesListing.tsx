@@ -1,74 +1,67 @@
-import { escrowAbi } from "@/abis/escrow";
-import { convertAddressType } from "@/helpers/tools";
-import { Sale } from "@/types/types";
-import { readContract } from "@wagmi/core";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { useAccount } from "wagmi";
-import { SalesPicker } from "./SalesPicker";
-import { TxContext } from "@/contexts/TxContext";
+import {
+  PortalStatus,
+  useGotchisByIdQuery,
+  usePortalsByIdQuery,
+} from "@/graphql/core/__generated__/types";
+import { useGotchisSvgQuery } from "@/graphql/svg/__generated__/types";
+import { AssetClass } from "@/helpers/enums";
+import { SaleV2 } from "@/types/types";
+import { SaleCard } from "../cards/SaleCard";
+import { setBlockGasLimit } from "viem/dist/types/actions/test/setBlockGasLimit";
 
-export const SalesListing = () => {
-  
-  const { address, isConnected } = useAccount();
-  const [sales, setSales] = useState<Sale[]>([]);
-  const txContext = useContext(TxContext);
+export const SalesListing = (props: { sales: SaleV2[] }) => {
+  // First we need to get all gotchi ids and portal ids from the sales
+  // We grab them all at once so we do not need to multiply graph queries.
+  const idsArray = props.sales.map((sale) =>
+    sale.assets
+      .filter(
+        (saleItem) =>
+          saleItem.class === AssetClass.ERC721 &&
+          saleItem.contract ===
+            process.env.NEXT_PUBLIC_AAVEGOTCHI_CONTRACT_ADDRESS
+      )
+      .map((saleItem) => saleItem.id.toString())
+  );
 
-  const getSales = useCallback(async (): Promise<Sale[]> => {
-    const offers = [];
-    if (isConnected && address && address.startsWith("0x")) {
-      const sellerSaleCount = await readContract({
-        address: convertAddressType(
-          process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS
-        ),
-        abi: escrowAbi,
-        functionName: "getSellerSalesCount",
-        args: [address],
-      });
+  const ids = idsArray.flat();
 
-      if (!sellerSaleCount) {
-        return [];
-      }
-      
-      const offers: Array<readonly [bigint, bigint, bigint, `0x${string}`, bigint]> = [];
-      for (let i = 0; i < sellerSaleCount; i++) {
-        const offer = await readContract({
-          address: convertAddressType(
-            process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS
-          ),
-          abi: escrowAbi,
-          functionName: "getSale",
-          args: [address, BigInt(i)],
-        });
-        offers.push([...offer, BigInt(i)]);
-      }
+  const portalsAndGotchis = usePortalsByIdQuery({
+    variables: { ids: ids },
+    context: { clientName: "core" },
+    skip: !ids.length,
+  });
 
-      return offers.map((offer):Sale => {
-        return {
-          id: offer[0],
-          priceInWei: offer[2],
-          assetId: offer[1],
-          seller: offer[3],
-          index: offer[4]
-        }
-      })
-    }
-    return []
-  }, [address, isConnected]);
+  const gotchiIds = portalsAndGotchis.data?.portals
+    .filter((portal) => portal.status === PortalStatus.Claimed)
+    .map((portal) => portal.id);
 
-  useEffect(() => {
-    console.log("useffect listing")
-    if ((isConnected && address && address.startsWith("0x")) || txContext?.txContextValue.status === "success") {
-      getSales().then((sales) => {
-        setSales(sales);
-      }).catch((error) => {
-        setSales([]);
-      })
-    }
-  }, [getSales, address, isConnected, txContext?.txContextValue.status]);
+  const portals = portalsAndGotchis.data?.portals.filter(
+    (portal) => portal.status !== PortalStatus.Claimed   
+  )
 
-  if (!sales || (sales && sales.length === 0)) {
-    return <>No Sales</>;
-  }
+  const gotchis = useGotchisByIdQuery({
+    variables: { ids: gotchiIds },
+    context: { clientName: "core" },
+    skip: !gotchiIds?.length,
+  });
 
-  return (<SalesPicker sales={sales} />)
+  const svgs = useGotchisSvgQuery({
+    variables: { ids: ids },
+    context: { clientName: "svg" },
+    skip: !gotchiIds?.length,
+  });
+
+  return (
+    <div className='flex flex-col gap-y-10'>
+      {props.sales.map((sale) => (
+        <SaleCard
+          key={sale.index.toString()}
+          sale={sale}
+          gotchis={gotchis.data?.aavegotchis ?? []}
+          portals={portals ?? []}
+          svgs={svgs.data?.aavegotchis ?? []}
+        />
+      ))}
+    </div>
+  );
 };

@@ -8,23 +8,26 @@ import { TxModal } from "@/components/specifics/modals/TxModal";
 import { TxContextProvider } from "@/contexts/TxContext";
 import { ModalContextProvider } from "@/contexts/ModalContext";
 import { CartContextProvider } from "@/contexts/CartContext";
+import { ConnectedCheck } from "@/components/hoc/wallet";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <InjectApollo>
       <InjectWagmi>
-        <CartContextProvider>
-          <TxContextProvider>
-            <ModalContextProvider>
-              <Layout>
-                <>
-                  <Component {...pageProps} />
-                  <TxModal />
-                </>
-              </Layout>
-            </ModalContextProvider>
-          </TxContextProvider>
-        </CartContextProvider>
+        <Layout>
+          <ConnectedCheck>
+            <CartContextProvider>
+              <TxContextProvider>
+                <ModalContextProvider>
+                  <>
+                    <Component {...pageProps} />
+                    <TxModal />
+                  </>
+                </ModalContextProvider>
+              </TxContextProvider>
+            </CartContextProvider>
+          </ConnectedCheck>
+        </Layout>
       </InjectWagmi>
     </InjectApollo>
   );
