@@ -1,7 +1,5 @@
 import { useContext, useState } from "react";
 import { GotchiPicker } from "@/components/specifics/pickers/GotchiPicker";
-import { OtcForm } from "@/components/specifics/forms/Otc/OtcForm";
-import { SelectableAsset } from "@/types/types";
 import { PortalPicker } from "@/components/specifics/pickers/PortalPicker";
 import { WearablePicker } from "@/components/specifics/pickers/WearablePicker";
 import { CartContext, CartContextProvider } from "@/contexts/CartContext";
@@ -10,15 +8,21 @@ import { OtcWizardStatus } from "@/helpers/enums";
 import { CheckApproval } from "@/components/specifics/pages/otc/new/CheckApproval";
 import { ExecApproval } from "@/components/specifics/pages/otc/new/ExecApproval";
 import { CreateOtc } from "@/components/specifics/pages/otc/new/CreateOtc";
+import {
+  OtcWizardContext,
+  OtcWizardContextProvider,
+} from "@/contexts/WizardContext";
 
 const NewContent = () => {
   const [enablePicker, setEnablePicker] = useState<boolean>(true);
-  const [wizardState, setWizardState] = useState<OtcWizardStatus>(
-    OtcWizardStatus.SELECTING_ASSET
-  );
+  // const [wizardState, setWizardState] = useState<OtcWizardStatus>(
+  //   OtcWizardStatus.SELECTING_ASSET
+  // );
+
+  const wizardCtx = useContext(OtcWizardContext);
 
   const cartCtx = useContext(CartContext);
-  console.log('render index')
+  console.log("render index");
 
   return (
     <div className="flex flex-col justify-center gap-y-10">
@@ -28,32 +32,20 @@ const NewContent = () => {
           clicks on the Next button to proceed.
         </p>
       </div>
-      <OtcCart wizardState={wizardState} setWizardState={setWizardState} />
-      {wizardState === OtcWizardStatus.APPROVING &&
+      <OtcCart />
+      {wizardCtx.status === OtcWizardStatus.APPROVING &&
         cartCtx.assets.findIndex(
           (asset) => typeof asset.approved === "undefined"
-        ) > -1 && (
-          <CheckApproval
-            wizardState={wizardState}
-            setWizardState={setWizardState}
-          />
-        )
-      }
-      {wizardState === OtcWizardStatus.APPROVING &&
+        ) > -1 && <CheckApproval />}
+      {wizardCtx.status === OtcWizardStatus.APPROVING &&
         cartCtx.assets.findIndex(
           (asset) => typeof asset.approved === "boolean" && !asset.approved
-        ) > -1 && (
-          <ExecApproval />
-        )
-      }
-      {wizardState === OtcWizardStatus.APPROVING &&
+        ) > -1 && <ExecApproval />}
+      {wizardCtx.status === OtcWizardStatus.APPROVING &&
         cartCtx.assets.findIndex(
           (asset) => typeof asset.approved === "undefined" || !asset.approved
-        ) === -1 && (
-          <CreateOtc />
-        )
-      }
-      {wizardState === OtcWizardStatus.SELECTING_ASSET && (
+        ) === -1 && <CreateOtc />}
+      {wizardCtx.status === OtcWizardStatus.SELECTING_ASSET && (
         <>
           <div>
             <GotchiPicker enablePicker={enablePicker} />
@@ -73,7 +65,9 @@ const NewContent = () => {
 const New = () => {
   return (
     // <CartContextProvider>
+    <OtcWizardContextProvider>
       <NewContent />
+    </OtcWizardContextProvider>
     // </CartContextProvider>
   );
 };

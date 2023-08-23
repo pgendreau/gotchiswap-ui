@@ -19,6 +19,10 @@
     @apply rounded bg-purple-600 hover:bg-purple-500 focus-visible:outline-purple-600 px-2 py-1 text-base font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ;
   }
 
+  .btn-gotchi {
+    @apply rounded-md bg-gotchi-500 px-3 py-2 text-lg font-semibold text-white shadow-sm hover:bg-gotchi-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gotchi-500
+  }
+
   .asset-selected {
     @apply bg-gradient-to-br from-gotchi-800  via-gotchi-500 to-g-yellow from-40% via-80% to-95%
   }

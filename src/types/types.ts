@@ -1,5 +1,6 @@
 import { GotchiFieldsFragment, PortalFieldsFragment } from "@/graphql/core/__generated__/types";
 import { SvgFieldsFragment } from "@/graphql/svg/__generated__/types";
+import { TxStatus } from "@/helpers/enums";
 
 export type SelectableAsset = Gotchi | Wearable | PortalFieldsFragment /* | GotchiFieldsFragment */
 export type PickerProps = {
@@ -35,4 +36,17 @@ export type SaleContractResponse = [bigint, bigint, bigint, `0x${string}`]
 
 export type SaleWithAsset = Sale & { assets: SelectableAsset[] }
 
+// Create the context type. It contains all data needed to know the status of an ongoing Tx
+export type TxContextType = {
+  operation: string
+  hash: `0x${string}` | undefined;
+  status: TxStatus
+  //status: "error" | "idle" | "waiting" | "loading" | "success" | undefined;
+};
 
+// Empty context value for setup
+export const txContextDefaultValue: TxContextType = {
+  operation: '',
+  hash: undefined,
+  status: TxStatus.IDLE
+};

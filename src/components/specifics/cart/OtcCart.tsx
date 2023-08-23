@@ -6,6 +6,7 @@ import { CardLayout } from "../cards/mini/CardLayout";
 import { SelectableAsset } from "@/types/types";
 import { OtcWizardStatus } from "@/helpers/enums";
 import { Loader } from "@/components/generics/loaders/Loader";
+import { OtcWizardContext } from "@/contexts/WizardContext";
 
 const countCartItems = (cart: SelectableAsset[]): number => {
   const count = cart.reduce((acc, curr) => {
@@ -25,13 +26,9 @@ const displayCartCount = (cart: SelectableAsset[]): string => {
   return `(${count})`;
 };
 
-export type OtcCartProps = {
-  wizardState: OtcWizardStatus;
-  setWizardState: Dispatch<SetStateAction<OtcWizardStatus>>;
-};
-
-export const OtcCart = (props: OtcCartProps) => {
+export const OtcCart = () => {
   const cartCtx = useContext(CartContext);
+  const wizardCtx = useContext(OtcWizardContext);
 
   return (
     <div>
@@ -51,23 +48,23 @@ export const OtcCart = (props: OtcCartProps) => {
           ))}
           {!!(
             cartCtx.assets.length > 0 &&
-            props.wizardState === OtcWizardStatus.SELECTING_ASSET
+            wizardCtx.status === OtcWizardStatus.SELECTING_ASSET
           ) && (
             <button
               className="btn-pink object-cover w-20"
-              onClick={() => props.setWizardState(OtcWizardStatus.APPROVING)}
+              onClick={() => wizardCtx.setStatus(OtcWizardStatus.APPROVING)}
             >
               Next
             </button>
           )}
-          {props.wizardState !== OtcWizardStatus.SELECTING_ASSET && (
+          {wizardCtx.status !== OtcWizardStatus.SELECTING_ASSET && (
             <button
               className="btn-pink object-cover w-20"
               onClick={() => {
-                if (props.wizardState === OtcWizardStatus.APPROVING) {
-                  props.setWizardState(OtcWizardStatus.SELECTING_ASSET);
-                } else if (props.wizardState === OtcWizardStatus.CREATING) {
-                  props.setWizardState(OtcWizardStatus.APPROVING);
+                if (wizardCtx.status === OtcWizardStatus.APPROVING) {
+                  wizardCtx.setStatus(OtcWizardStatus.SELECTING_ASSET);
+                } else if (wizardCtx.status === OtcWizardStatus.CREATING) {
+                  wizardCtx.setStatus(OtcWizardStatus.APPROVING);
                 }
               }}
             >

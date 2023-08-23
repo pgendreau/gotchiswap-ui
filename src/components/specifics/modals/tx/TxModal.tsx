@@ -1,9 +1,12 @@
 import { Fragment, useContext, useEffect, useState } from "react";
-import { TxContext, TxContextType } from "@/contexts/TxContext";
 import { shortenAddress } from "@/helpers/tools";
 import { Transition, Dialog } from "@headlessui/react";
+import { TxContextType } from "@/types/types";
+import { TxStatus } from "@/helpers/enums";
+import { StatusDisplay } from "./StatusDisplay";
+import { Loader } from "@/components/generics/loaders/Loader";
 
-export const TxModal2 = (props: { txContext: TxContextType }) => {
+export const TxModal = (props: { txContext: TxContextType }) => {
   // const ctx = useContext(TxContext);
   const [open, setOpen] = useState(false);
 
@@ -12,8 +15,7 @@ export const TxModal2 = (props: { txContext: TxContextType }) => {
     if (
       props.txContext &&
       props.txContext.status &&
-      props.txContext.status !== "success" &&
-      props.txContext.status !== "idle"
+      props.txContext.status !== TxStatus.IDLE
     ) {
       setOpen(true);
     } else {
@@ -29,7 +31,7 @@ export const TxModal2 = (props: { txContext: TxContextType }) => {
           enter="ease-out duration-300"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in duration-300"
+          leave="ease-in duration-2000"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
@@ -43,24 +45,22 @@ export const TxModal2 = (props: { txContext: TxContextType }) => {
               enter="ease-out duration-300"
               enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
+              leave="ease-in duration-1600"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-md bg-purple-950 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <div>
                   <div className="mt-3 text-center sm:mt-5">
-                    <Dialog.Title
-                      as="h3"
-                      className="text-base font-semibold leading-6 text-white"
-                    >
-                      Transaction status
-                    </Dialog.Title>
-                    <div className="mt-2 text-white">
+                    <div className=" text-white">
                       <div className="flex flex-col gap-y-3">
-                        <div>{props.txContext.operation}</div>
-                        <div>Tx status: {props.txContext.status}</div>
-
+                        <div className="font-semibold text-lg">
+                          {props.txContext.operation}
+                        </div>
+                        <Loader />
+                        <div>
+                          <StatusDisplay status={props.txContext.status} />
+                        </div>
                         <div>
                           <a
                             href={`https://polygonscan.com/tx/${props.txContext.hash}`}

@@ -1,3 +1,5 @@
+import { TxStatus } from "@/helpers/enums";
+import { TxContextType, txContextDefaultValue } from "@/types/types";
 import { WriteContractResult } from "@wagmi/core";
 import {
   PropsWithChildren,
@@ -6,20 +8,6 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-
-// Create the context type. It contains all data needed to know the status of an ongoing Tx
-export type TxContextType = {
-  operation: string
-  hash: `0x${string}` | undefined;
-  status: "error" | "idle" | "waiting" | "loading" | "success" | undefined;
-};
-
-// Empty context value for setup
-export const txContextDefaultValue: TxContextType = {
-  operation: '',
-  hash: undefined,
-  status: 'idle'
-};
 
 // The context itself
 export const TxContext = createContext<{txContextValue: TxContextType; setTxContextValue: Dispatch<SetStateAction<TxContextType>>;}>(undefined!);

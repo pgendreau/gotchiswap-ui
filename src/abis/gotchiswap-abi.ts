@@ -686,4 +686,4 @@ export const gotchiswapAbi =
     "stateMutability": "nonpayable",
     "type": "function"
   }
-]
+] as const

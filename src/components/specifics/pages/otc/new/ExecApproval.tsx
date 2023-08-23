@@ -1,11 +1,16 @@
-import { Loader } from "@/components/generics/loaders/Loader";
-import { TxModal2 } from "@/components/specifics/modals/TxModal2";
+import { TxModal } from "@/components/specifics/modals/tx/TxModal";
 import { CartContext } from "@/contexts/CartContext";
 import { TxContext } from "@/contexts/TxContext";
 import { TxStatus } from "@/helpers/enums";
+import { sleep } from "@/helpers/tools";
 import { useApprovalExec } from "@/hooks/ApprovalExec";
-import { ApprovableAsset } from "@/types/types";
-import { useContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 export const ExecApproval = () => {
   const [approveTxStarted, setApproveTxStarted] = useState<boolean>(false);
@@ -46,29 +51,37 @@ export const ExecApproval = () => {
           </button>
         )}
 
-        {approveTxStarted && <ExecTx />}
+        {approveTxStarted && (
+          <ExecTx
+            approveTxStarted={approveTxStarted}
+            setApproveTxStarted={setApproveTxStarted}
+          />
+        )}
       </div>
     </>
   );
 };
 
-const ExecTx = () => {
+const ExecTx = (props: {
+  approveTxStarted: boolean;
+  setApproveTxStarted: Dispatch<SetStateAction<boolean>>;
+}) => {
   console.log("render ExecTx");
-  const { status, txContext } = useApprovalExec();
-  const { setTxContextValue } = useContext(TxContext);
+  const cartCtx = useContext(CartContext);
+  //const txContext2 = useContext(TxContext);
+  // I don't want to send a state var into the hook, so I copy the array
+  // Not sure that is necessary
+  const assetsCopy = [...cartCtx.assets];
+  const { status, txContext, assets } = useApprovalExec(assetsCopy, props.setApproveTxStarted);
 
-  // useEffect( () => {
-  //   console.log('useEffect in ExecTx', txContext.status)
-  //   setTxContextValue(txContext)
-  // }, [txContext, setTxContextValue])
+  //txContext2.setTxContextValue(txContext);
 
-  return (
-    <>
-      <TxModal2 txContext={txContext} />
-      <div className="flex flex-row gap-x-5 justify-center">
-        <Loader />
-        <p>{txContext.status}</p>
-      </div>
-    </>
-  );
+  useEffect(() => {
+    console.log("useEffect in ExecTx");
+    cartCtx.setAssets(assets);
+    //txContext2.setTxContextValue(txContext);
+  }, [cartCtx.setAssets, assets, sleep]);
+
+  // return <>Transaction in progress</>
+  return <TxModal txContext={txContext} />;
 };
