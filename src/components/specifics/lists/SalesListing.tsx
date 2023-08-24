@@ -4,10 +4,9 @@ import {
   usePortalsByIdQuery,
 } from "@/graphql/core/__generated__/types";
 import { useGotchisSvgQuery } from "@/graphql/svg/__generated__/types";
-import { AssetClass } from "@/helpers/enums";
+import { AssetClass, OfferType } from "@/helpers/enums";
 import { SaleV2 } from "@/types/types";
-import { SaleCard } from "../cards/SaleCard";
-import { setBlockGasLimit } from "viem/dist/types/actions/test/setBlockGasLimit";
+import { OfferCard } from "../cards/OfferCard";
 
 export const SalesListing = (props: { sales: SaleV2[] }) => {
   // First we need to get all gotchi ids and portal ids from the sales
@@ -36,8 +35,8 @@ export const SalesListing = (props: { sales: SaleV2[] }) => {
     .map((portal) => portal.id);
 
   const portals = portalsAndGotchis.data?.portals.filter(
-    (portal) => portal.status !== PortalStatus.Claimed   
-  )
+    (portal) => portal.status !== PortalStatus.Claimed
+  );
 
   const gotchis = useGotchisByIdQuery({
     variables: { ids: gotchiIds },
@@ -52,14 +51,15 @@ export const SalesListing = (props: { sales: SaleV2[] }) => {
   });
 
   return (
-    <div className='flex flex-col gap-y-10'>
+    <div className="flex flex-col gap-y-10">
       {props.sales.map((sale) => (
-        <SaleCard
+        <OfferCard
           key={sale.index.toString()}
           sale={sale}
           gotchis={gotchis.data?.aavegotchis ?? []}
           portals={portals ?? []}
           svgs={svgs.data?.aavegotchis ?? []}
+          type={OfferType.SALE}
         />
       ))}
     </div>

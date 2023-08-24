@@ -1,13 +1,14 @@
 import { ghstAbi } from "@/abis/ghst";
 import { convertAddressType } from "@/helpers/tools";
-import { SaleWithAsset } from "@/types/types";
+import { SaleV2, SaleWithAsset } from "@/types/types";
 import { useEffect, useState } from "react";
 import { useAccount, useContractRead } from "wagmi";
 import { BuyButton } from "./BuyButton";
 import { ApproveBuyButton } from "./ApproveBuyButton";
 
-export const CheckApproveBeforeBuyButton = (props: { sale: SaleWithAsset }) => {
-  const [neededAllowance, setNeededAllowance] = useState<bigint>(props.sale.priceInWei);
+export const CheckApproveBeforeBuyButton = (props: { sale: SaleV2 }) => {
+  const priceInWei = props.sale.prices[0].amount
+  const [neededAllowance, setNeededAllowance] = useState<bigint>(priceInWei);
   const { address, isConnected } = useAccount();
 
   const { data, isSuccess, status, error } = useContractRead({
@@ -23,12 +24,12 @@ export const CheckApproveBeforeBuyButton = (props: { sale: SaleWithAsset }) => {
   useEffect(() => {
     if (data !== undefined && status === "success") {
       const allowance = BigInt(data);
-      if (allowance < props.sale.priceInWei) {
-        setNeededAllowance(props.sale.priceInWei - allowance);
+      if (allowance < priceInWei) {
+        setNeededAllowance(priceInWei - allowance);
       }
     }
-  }, [data, props.sale.priceInWei, status]);
-
+  }, [data, priceInWei, status]);
+  debugger
   if (status === "error") {
     console.log(error);
     return <div>An error occured</div>;
@@ -39,7 +40,7 @@ export const CheckApproveBeforeBuyButton = (props: { sale: SaleWithAsset }) => {
   }
 
   if (data !== undefined) {
-    if (props.sale.priceInWei > data || neededAllowance > BigInt(0)) {
+    if (priceInWei > data) {
       return (
         <ApproveBuyButton
           sale={props.sale}

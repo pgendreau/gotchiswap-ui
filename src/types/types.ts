@@ -70,3 +70,7 @@ export const txContextDefaultValue: TxContextType = {
   hash: undefined,
   status: TxStatus.IDLE
 };
+
+// Gotchiswap getSale return type 
+// We need it to type guard the result of the multicall
+export type GetSaleResult = readonly [bigint, readonly number[], readonly `0x${string}`[], readonly bigint[], readonly bigint[], readonly number[], readonly `0x${string}`[], readonly bigint[], readonly bigint[], `0x${string}`]

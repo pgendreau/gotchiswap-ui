@@ -18,3 +18,8 @@ export enum TxStatus {
   SUCCESS = 2,
   ERROR = 3
 }
+
+export enum OfferType {
+  SALE = 0,
+  BUY = 1
+}

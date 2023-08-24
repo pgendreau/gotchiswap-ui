@@ -1,12 +1,8 @@
-import { aavegotchiAbi } from "@/abis/aavegotchi";
 import { escrowAbi } from "@/abis/escrow";
+import { gotchiswapAbi } from "@/abis/gotchiswap-abi";
 import { TxContext } from "@/contexts/TxContext";
-import {
-  GotchiFieldsFragment,
-  PortalFieldsFragment,
-} from "@/graphql/core/__generated__/types";
-import { convertAddressType } from "@/helpers/tools";
-import { SaleWithAsset } from "@/types/types";
+import { convertAddressType, convertTxStatus } from "@/helpers/tools";
+import { SaleV2, SaleWithAsset } from "@/types/types";
 import { useContext, useEffect } from "react";
 import {
   useContractWrite,
@@ -14,12 +10,12 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
-export const BuyButton = (props: { sale: SaleWithAsset }) => {
+export const BuyButton = (props: { sale: SaleV2 }) => {
   const txContext = useContext(TxContext);
   const prepareBuyTx = usePrepareContractWrite({
     address: convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS),
-    abi: escrowAbi,
-    functionName: "buyGotchi",
+    abi: gotchiswapAbi,
+    functionName: "concludeSale",
     args: [props.sale.index],
   });
 
@@ -34,7 +30,7 @@ export const BuyButton = (props: { sale: SaleWithAsset }) => {
       txContext?.setTxContextValue({
         hash: buyTx.data?.hash,
         operation: "Complete OTC purchase",
-        status: waitForTx.status,
+        status: convertTxStatus(waitForTx.status),
       });
     }
   }, [waitForTx.status, buyTx.data?.hash, txContext?.setTxContextValue]);

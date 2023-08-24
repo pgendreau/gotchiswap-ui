@@ -1,4 +1,4 @@
-import { SaleItem, SelectableAsset, Wearable } from "@/types/types"
+import { GetSaleResult, SaleItem, SelectableAsset, Wearable } from "@/types/types"
 import { TxStatus } from "./enums"
 
 /**
@@ -31,7 +31,7 @@ export const convertAddressType = (address: string | undefined): `0x${string}` =
  * @param address 
  * @returns boolean
  */
-export const isAddressValid = (address: string): boolean => {
+export const isAddressValid = (address: string): address is `0x${string}` => {
   return address.length === 42 && address.startsWith('0x')
 }
 
@@ -105,4 +105,50 @@ export const saleItemDTO = (type: 0|1|2, contract: string, id: bigint, amount: b
     id,
     amount
   }
+}
+
+/**
+ * @description type guard for getSale result. I don't want to talk about it.
+ * @param result 
+ * @returns boolean
+ */
+export const isGetSaleResult = (result: any): result is GetSaleResult => {
+  if (!result) return false
+  if (!Array.isArray(result)) return false
+  if (result.length !== 10) return false
+  if (typeof result[0] !== 'bigint') return false
+  if (!Array.isArray(result[1])) return false
+  for (const value of result[1]) {
+    if (typeof value !== 'number') return false
+  }
+  if (!Array.isArray(result[2])) return false
+  for (const value of result[2]) {
+    if (!isAddressValid(value)) return false
+  }
+  if (!Array.isArray(result[3])) return false
+  for (const value of result[3]) {
+    if (typeof value !== 'bigint') return false
+  } 
+  if (!Array.isArray(result[4])) return false
+  for (const value of result[4]) {
+    if (typeof value !== 'bigint') return false
+  } 
+  if (!Array.isArray(result[5])) return false
+  for (const value of result[5]) {
+    if (typeof value !== 'number') return false
+  }
+  if (!Array.isArray(result[6])) return false
+  for (const value of result[6]) {
+    if (!isAddressValid(value)) return false
+  }
+  if (!Array.isArray(result[7])) return false
+  for (const value of result[7]) {
+    if (typeof value !== 'bigint') return false
+  } 
+  if (!Array.isArray(result[8])) return false
+  for (const value of result[8]) {
+    if (typeof value !== 'bigint') return false
+  }
+  if (!isAddressValid(result[9])) return false  
+  return true  
 }

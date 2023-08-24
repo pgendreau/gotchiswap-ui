@@ -40,12 +40,12 @@ export const GotchiCard = ({
           <div className="w-1/2">{`AGG ${gotchi?.modifiedNumericTraits[1]}`}</div>
         </div>
         <div className="flex flex-row place-items-center justify-center mt-1">
-          <div className="w-1/2">{`SPK ${gotchi?.modifiedNumericTraits[0]}`}</div>
-          <div className="w-1/2">{`BRN ${gotchi?.modifiedNumericTraits[1]}`}</div>
+          <div className="w-1/2">{`SPK ${gotchi?.modifiedNumericTraits[2]}`}</div>
+          <div className="w-1/2">{`BRN ${gotchi?.modifiedNumericTraits[3]}`}</div>
         </div>
         <div className="flex flex-row place-items-center justify-center mt-1">
-          <div className="w-1/2">{`EYS ${gotchi?.modifiedNumericTraits[0]}`}</div>
-          <div className="w-1/2">{`EYC ${gotchi?.modifiedNumericTraits[1]}`}</div>
+          <div className="w-1/2">{`EYS ${gotchi?.modifiedNumericTraits[4]}`}</div>
+          <div className="w-1/2">{`EYC ${gotchi?.modifiedNumericTraits[5]}`}</div>
         </div>
       </div>
     </div>

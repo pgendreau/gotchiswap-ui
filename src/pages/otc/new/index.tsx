@@ -26,12 +26,12 @@ const NewContent = () => {
 
   return (
     <div className="flex flex-col justify-center gap-y-10">
-      <div className="text-2xl">
+      {/* <div className="text-2xl">
         <p>
           To create an OTC deal, just pick the asset you want to sell. Then
           clicks on the Next button to proceed.
         </p>
-      </div>
+      </div> */}
       <OtcCart />
       {wizardCtx.status === OtcWizardStatus.APPROVING &&
         cartCtx.assets.findIndex(

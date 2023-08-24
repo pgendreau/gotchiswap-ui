@@ -1,7 +1,7 @@
 import { ghstAbi } from "@/abis/ghst";
 import { TxContext } from "@/contexts/TxContext";
-import { convertAddressType } from "@/helpers/tools";
-import { SaleWithAsset } from "@/types/types";
+import { convertAddressType, convertTxStatus } from "@/helpers/tools";
+import { SaleV2, SaleWithAsset } from "@/types/types";
 import {
   Dispatch,
   SetStateAction,
@@ -16,7 +16,7 @@ import {
 } from "wagmi";
 
 type ApproveBuyButtonProps = {
-  sale: SaleWithAsset;
+  sale: SaleV2;
   neededAllowance: bigint;
   setNeededAllowance: Dispatch<SetStateAction<bigint>>;
 };
@@ -48,7 +48,7 @@ export const ApproveBuyButton = (props: ApproveBuyButtonProps) => {
       txContext?.setTxContextValue({
         hash: increaseAllowanceTx.data?.hash,
         operation: "Increase GHST allowance",
-        status: waitForTx.status,
+        status: convertTxStatus(waitForTx.status),
       });
     }
     if (waitForTx.status === "success") {
@@ -63,7 +63,7 @@ export const ApproveBuyButton = (props: ApproveBuyButtonProps) => {
 
   return (
     <button className="btn-base" onClick={() => increaseAllowanceTx.write?.()}>
-      Increase allowance
+      Approve then Buy
     </button>
   );
 };
