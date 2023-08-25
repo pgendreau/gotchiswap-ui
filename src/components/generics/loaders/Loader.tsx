@@ -2,7 +2,7 @@ import { TxStatus } from "@/helpers/enums";
 import { classNames } from "@/helpers/tools";
 
 type LoaderProps = {
-  status: TxStatus
+  status?: TxStatus | undefined;
 }
 
 export const Loader = ({ status = TxStatus.LOADING }: LoaderProps) => {
