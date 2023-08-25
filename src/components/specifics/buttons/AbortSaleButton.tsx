@@ -1,10 +1,7 @@
-import { escrowAbi } from "@/abis/escrow";
 import { gotchiswapAbi } from "@/abis/gotchiswap-abi";
-import { TxContext } from "@/contexts/TxContext";
 import { TxStatus } from "@/helpers/enums";
-import { convertAddressType, convertTxStatus } from "@/helpers/tools";
-import { SaleV2, SaleWithAsset, TxContextType } from "@/types/types";
-import { useContext, useEffect } from "react";
+import { convertAddressType, createTxContext } from "@/helpers/tools";
+import { SaleV2, TxContextType } from "@/types/types";
 import { BaseError } from "viem";
 import {
   useContractWrite,
@@ -29,47 +26,19 @@ export const AbortSaleButton = (props: { sale: SaleV2 }) => {
   const txWaitData = useWaitForTransaction({
     hash: txWriteData.data?.hash,
   });
-
-  let txContext: TxContextType = {
-    operation: "Abort OTC offer",
-    hash: "0x0",
-    status: TxStatus.IDLE,
-  };
-
-  if (txWriteData.status === "loading" && txWaitData.status === "idle") {
-    txContext = {
-      operation: "Abort OTC offer",
-      hash: "0x0",
-      status: TxStatus.WAITING,
-    };
-  }
-
-  if (txWriteData.isError || txWaitData.isError) {
-    let errorMessage = "An error has occured. Please try again.";
-    if (txWriteData.error instanceof BaseError) {
-      errorMessage = txWriteData.error.shortMessage;
-    } else if (txWaitData.error instanceof BaseError) {
-      errorMessage = txWaitData.error.shortMessage;
-
-      txContext = {
-        operation: errorMessage,
-        hash: txWriteData.data?.hash,
-        status: TxStatus.ERROR,
-      };
-    }
-  }
-
-  if (txWriteData.isSuccess && txWaitData.isLoading) {
-    txContext = {
-      operation: "Create OTC offer",
-      hash: txWriteData.data?.hash,
-      status: TxStatus.LOADING,
-    };
-  }
-
+  
   if (txWaitData.isSuccess) {
     router.reload();
   }
+
+  const txContext = createTxContext(
+    "Abort OTC Sale",
+    txWriteData.status,
+    txWaitData.status,
+    txWriteData.data?.hash,
+    txWriteData.error,
+    txWaitData.error
+  )
 
   return (
     <>

@@ -1,7 +1,5 @@
-import { Gotchi, SaleV2, SaleWithAsset, Wearable } from "@/types/types";
-import { Dispatch, PropsWithChildren, SetStateAction } from "react";
+import { Gotchi, SaleV2, Wearable } from "@/types/types";
 import {
-  classNames,
   getWearableUri,
   readablePrice,
   shortenAddress,
@@ -70,7 +68,7 @@ export const OfferCard = (props: OfferCardProps) => {
   }
 
   return (
-    <div className="flex flex-row flex-wrap gap-10">
+    <div className="flex flex-row flex-wrap gap-6">
       <div key="infos" className="flex flex-col gap-2 place-content-start">
         {props.type === OfferType.BUY && (
           <>

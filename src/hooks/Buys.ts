@@ -12,13 +12,16 @@ export const useBuys = (): { buys: SaleV2[], isLoading: boolean } => {
   const { address } = useAccount()
   const [buys, setBuys] = useState<SaleV2[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const otcContract = {
-    address: process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS,
-    abi: gotchiswapAbi
-  }
+
 
   useEffect(() => {
     const getBuys = async () => {
+
+      const otcContract = {
+        address: process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS,
+        abi: gotchiswapAbi
+      }
+
       if (!address) return []
 
       // sale array. But we call it buys because we are the buyer....

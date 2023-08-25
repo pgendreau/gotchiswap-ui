@@ -27,7 +27,7 @@ export const WearablePicker = (props: PickerProps) => {
     ),
     abi: wearableAbi,
     functionName: "balanceOfBatch",
-    args: [addressArray, wearableIds],
+    args: [addressArray, wearableIds.map(w => BigInt(w))],
     onSuccess(data) {
       if (data && Array.isArray(data) && data.length === wearableIds.length) {
         const availableWearables = data

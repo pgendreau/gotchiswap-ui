@@ -42,12 +42,12 @@ export const ExecApproval = () => {
         </ul>
         {!approveTxStarted && (
           <button
-            className="btn-pink"
+            className="btn-gotchi"
             onClick={() => {
               setApproveTxStarted(true);
             }}
           >
-            Approuver
+            Approve all
           </button>
         )}
 

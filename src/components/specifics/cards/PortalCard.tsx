@@ -18,7 +18,7 @@ export const PortalCard = ({
       className={classNames(
         withBorders ? "p-3" : "",
         withBackground ? "asset" : "",
-        "w-24 md:w-36 flex flex-col place-items-center"
+        "w-24 md:w-36 flex flex-col place-items-center place-self-start gap-y-2"
       )}
     >
       <div className="font-kanit text-sm text-center">

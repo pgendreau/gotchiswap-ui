@@ -28,6 +28,9 @@ module.exports = {
         'light-pink': '#FFE8FF',
         'off-black': '#1A0335',
         'g-yellow': '#FEF87D',
+      },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
       }
     },
   },

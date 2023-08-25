@@ -1,19 +1,17 @@
 import { ghstAbi } from "@/abis/ghst";
-import { TxContext } from "@/contexts/TxContext";
-import { convertAddressType, convertTxStatus } from "@/helpers/tools";
-import { SaleV2, SaleWithAsset } from "@/types/types";
 import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-} from "react";
+  convertAddressType,
+  createTxContext,
+  readablePrice,
+} from "@/helpers/tools";
+import { SaleV2 } from "@/types/types";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import {
-  useAccount,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
+import { TxModal } from "../modals/tx/TxModal";
 
 type ApproveBuyButtonProps = {
   sale: SaleV2;
@@ -22,8 +20,6 @@ type ApproveBuyButtonProps = {
 };
 
 export const ApproveBuyButton = (props: ApproveBuyButtonProps) => {
-  const { address, isConnected } = useAccount();
-  const txContext = useContext(TxContext);
   const prepareIncreaseAllowanceTx = usePrepareContractWrite({
     address: convertAddressType(process.env.NEXT_PUBLIC_GHST_CONTRACT_ADDRESS),
     abi: ghstAbi,
@@ -42,28 +38,34 @@ export const ApproveBuyButton = (props: ApproveBuyButtonProps) => {
     hash: increaseAllowanceTx.data?.hash,
   });
 
-  useEffect(() => {
-    console.log("waitForTx.status", waitForTx.status);
-    if (txContext?.setTxContextValue && increaseAllowanceTx.data?.hash) {
-      txContext?.setTxContextValue({
-        hash: increaseAllowanceTx.data?.hash,
-        operation: "Increase GHST allowance",
-        status: convertTxStatus(waitForTx.status),
-      });
-    }
-    if (waitForTx.status === "success") {
-      props.setNeededAllowance(BigInt(0));
-    }
-  }, [
+  // useEffect(() => {
+  //   if (waitForTx.status === "success") {
+  //     props.setNeededAllowance(BigInt(0));
+  //   }
+  // }, [waitForTx.status, props.setNeededAllowance]);
+
+  if (waitForTx.status === "success") {
+    props.setNeededAllowance(BigInt(0));
+  }
+
+  const txContext = createTxContext(
+    `Approve ${readablePrice(props.neededAllowance)} GHST`,
+    increaseAllowanceTx.status,
     waitForTx.status,
     increaseAllowanceTx.data?.hash,
-    txContext?.setTxContextValue,
-    props.setNeededAllowance,
-  ]);
+    increaseAllowanceTx.error,
+    waitForTx.error
+  );
 
   return (
-    <button className="btn-base" onClick={() => increaseAllowanceTx.write?.()}>
-      Approve then Buy
-    </button>
+    <>
+      <button
+        className="btn-base"
+        onClick={() => increaseAllowanceTx.write?.()}
+      >
+        Approve then Buy
+      </button>
+      <TxModal txContext={txContext} />
+    </>
   );
 };

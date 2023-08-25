@@ -1,6 +1,7 @@
-import { GetSaleResult, SaleItem, SelectableAsset, Wearable } from "@/types/types"
+import { GetSaleResult, SaleItem, SelectableAsset, TxContextType, Wearable } from "@/types/types"
 import { TxStatus } from "./enums"
 import { PortalFieldsFragment, PortalStatus } from "@/graphql/core/__generated__/types"
+import { BaseError } from "viem"
 
 /**
  * @description Basic address shortener
@@ -154,8 +155,70 @@ export const isGetSaleResult = (result: any): result is GetSaleResult => {
   return true  
 }
 
+/**
+ * @description Helper to get the portal image based on portal status
+ * @param portal 
+ * @returns 
+ */
 export const getPortalImg = (portal: PortalFieldsFragment): string => {
-  debugger
   const status = portal.status === PortalStatus.Bought ? 'closed' : 'open'
   return `/images/h${portal.hauntId}_${status}.svg`
+}
+
+/**
+ * @description Helper to create a tx context based on tx status
+ * @param txLabel 
+ * @param txWriteStatus 
+ * @param txWaitStatus 
+ * @param hash 
+ * @param txWriteError 
+ * @param txWaitError 
+ * @returns 
+ */
+export const createTxContext = (
+  txLabel: string,
+  txWriteStatus:  "success" | "error" | "loading" | "idle",
+  txWaitStatus:  "success" | "error" | "loading" | "idle",
+  hash: `0x${string}` | undefined,
+  txWriteError: Error | null,
+  txWaitError: Error | null,
+): TxContextType => {
+  let txContext: TxContextType = {
+    operation: txLabel,
+    hash: "0x0",
+    status: TxStatus.IDLE,
+  };
+
+  if (txWriteStatus === "loading" && txWaitStatus === "idle") {
+    txContext = {
+      operation: txLabel,
+      hash: "0x0",
+      status: TxStatus.WAITING,
+    };
+  }
+
+  if (txWriteStatus === 'error' || txWaitStatus === 'error') {
+    let errorMessage = "An error has occured. Please try again.";
+    if (txWriteError instanceof BaseError) {
+      errorMessage = txWriteError.shortMessage;
+    } else if (txWaitError instanceof BaseError) {
+      errorMessage = txWaitError.shortMessage;
+
+      txContext = {
+        operation: errorMessage,
+        hash: hash,
+        status: TxStatus.ERROR,
+      };
+    }
+  }
+
+  if (txWriteStatus === 'success' && txWaitStatus === 'loading') {
+    txContext = {
+      operation: txLabel,
+      hash: hash,
+      status: TxStatus.LOADING,
+    };
+  }
+
+  return txContext
 }

@@ -37,7 +37,7 @@ export const OtcCart = () => {
       </SectionTitle>
       {!cartCtx.assets.length ? (
         <div className="text-2xl">
-          <p>You haven't selected any assets yet</p>
+          <p>{`You haven't selected any assets yet`}</p>
         </div>
       ) : (
         <div className="flex flex-row flex-wrap justify-center gap-5">

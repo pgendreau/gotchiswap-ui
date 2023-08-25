@@ -1,7 +1,7 @@
 import { ghstAbi } from "@/abis/ghst";
 import { convertAddressType } from "@/helpers/tools";
-import { SaleV2, SaleWithAsset } from "@/types/types";
-import { useEffect, useState } from "react";
+import { SaleV2 } from "@/types/types";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useAccount, useContractRead } from "wagmi";
 import { BuyButton } from "./BuyButton";
 import { ApproveBuyButton } from "./ApproveBuyButton";
@@ -25,11 +25,15 @@ export const CheckApproveBeforeBuyButton = (props: { sale: SaleV2 }) => {
     if (data !== undefined && status === "success") {
       const allowance = BigInt(data);
       if (allowance < priceInWei) {
-        setNeededAllowance(priceInWei - allowance);
-      }
+        setNeededAllowance(priceInWei);
+      } else {
+        setNeededAllowance(BigInt(0));
+      } 
     }
   }, [data, priceInWei, status]);
-  debugger
+  
+
+  
   if (status === "error") {
     console.log(error);
     return <div>An error occured</div>;
@@ -40,7 +44,8 @@ export const CheckApproveBeforeBuyButton = (props: { sale: SaleV2 }) => {
   }
 
   if (data !== undefined) {
-    if (priceInWei > data) {
+  
+    if (neededAllowance > BigInt(0)) {
       return (
         <ApproveBuyButton
           sale={props.sale}

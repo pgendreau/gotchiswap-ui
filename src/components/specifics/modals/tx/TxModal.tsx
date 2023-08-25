@@ -1,5 +1,5 @@
 import { Fragment, useContext, useEffect, useState } from "react";
-import { shortenAddress } from "@/helpers/tools";
+import { classNames, shortenAddress } from "@/helpers/tools";
 import { Transition, Dialog } from "@headlessui/react";
 import { TxContextType } from "@/types/types";
 import { TxStatus } from "@/helpers/enums";
@@ -14,8 +14,7 @@ export const TxModal = (props: { txContext: TxContextType }) => {
     console.log("Modal UseEffect", props.txContext.status);
     if (
       props.txContext &&
-      props.txContext.status &&
-      props.txContext.status !== TxStatus.IDLE
+      props.txContext.status 
     ) {
       setOpen(true);
     } else {
@@ -57,11 +56,11 @@ export const TxModal = (props: { txContext: TxContextType }) => {
                         <div className="font-semibold text-lg">
                           {props.txContext.operation}
                         </div>
-                        <Loader />
+                        <Loader status={props.txContext.status}/>
                         <div>
                           <StatusDisplay status={props.txContext.status} />
                         </div>
-                        <div>
+                        <div className={classNames((!props.txContext.status || props.txContext.hash === "0x0") && 'text-purple-950')}>
                           <a
                             href={`https://polygonscan.com/tx/${props.txContext.hash}`}
                             target="_blank"
