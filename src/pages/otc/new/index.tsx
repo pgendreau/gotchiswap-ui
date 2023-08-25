@@ -12,26 +12,15 @@ import {
   OtcWizardContext,
   OtcWizardContextProvider,
 } from "@/contexts/WizardContext";
+import ClientOnly from "@/components/generics/nextShit/ClientOnly";
 
 const NewContent = () => {
   const [enablePicker, setEnablePicker] = useState<boolean>(true);
-  // const [wizardState, setWizardState] = useState<OtcWizardStatus>(
-  //   OtcWizardStatus.SELECTING_ASSET
-  // );
-
   const wizardCtx = useContext(OtcWizardContext);
-
   const cartCtx = useContext(CartContext);
-  console.log("render index");
 
   return (
     <div className="flex flex-col justify-center gap-y-10">
-      {/* <div className="text-2xl">
-        <p>
-          To create an OTC deal, just pick the asset you want to sell. Then
-          clicks on the Next button to proceed.
-        </p>
-      </div> */}
       <OtcCart />
       {wizardCtx.status === OtcWizardStatus.APPROVING &&
         cartCtx.assets.findIndex(
@@ -64,11 +53,11 @@ const NewContent = () => {
 
 const New = () => {
   return (
-    // <CartContextProvider>
-    <OtcWizardContextProvider>
-      <NewContent />
-    </OtcWizardContextProvider>
-    // </CartContextProvider>
+    <ClientOnly>
+      <OtcWizardContextProvider>
+        <NewContent />
+      </OtcWizardContextProvider>
+    </ClientOnly>
   );
 };
 

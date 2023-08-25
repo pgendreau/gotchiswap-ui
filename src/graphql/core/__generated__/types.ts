@@ -2579,7 +2579,7 @@ export enum Portal_OrderBy {
   GotchiExperience = 'gotchi__experience',
   GotchiGotchiId = 'gotchi__gotchiId',
   GotchiHauntId = 'gotchi__hauntId',
-  GotchiKinship = 'gotchi__kinship',
+GotchiKinship = 'gotchi__kinship',
   GotchiLastInteracted = 'gotchi__lastInteracted',
   GotchiLending = 'gotchi__lending',
   GotchiLevel = 'gotchi__level',
@@ -3815,7 +3815,7 @@ export type GotchisByIdLazyQueryHookResult = ReturnType<typeof useGotchisByIdLaz
 export type GotchisByIdQueryResult = Apollo.QueryResult<GotchisByIdQuery, GotchisByIdQueryVariables>;
 export const PortalsDocument = gql`
     query portals($owner: String!) {
-  portals(where: {buyer: $owner, openedAt: null}) {
+  portals(where: {owner: $owner, openedAt: null}) {
     ...PortalFields
   }
 }

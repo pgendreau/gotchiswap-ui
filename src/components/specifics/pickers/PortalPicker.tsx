@@ -16,7 +16,10 @@ export const PortalPicker = (props: PickerProps) => {
   const portals = usePortalsQuery({
     variables: { owner: address },
     context: { clientName: "core" },
+    pollInterval: 6000,
   });
+
+  portals.refetch();
 
   const handleOnPickerClick = (portal: PortalFieldsFragment) => {
     if (props.enablePicker) {
@@ -41,7 +44,7 @@ export const PortalPicker = (props: PickerProps) => {
   return (
     <>
       {!!portals.data?.portals.length && (
-        <SectionTitle>{"X Portals X"}</SectionTitle>
+        <SectionTitle>{"portAls X"}</SectionTitle>
       )}
 
       <div className="flex flex-row flex-wrap justify-center gap-5">
@@ -53,13 +56,13 @@ export const PortalPicker = (props: PickerProps) => {
             className={classNames(
               cartCtx?.assets?.findIndex(
                 (asset) =>
-                  asset.id === portal.id && asset.__typename === "wearable"
+                  asset.id === portal.id && asset.__typename === "Portal"
               ) >= 0
                 ? "asset-selected"
                 : "asset"
             )}
           >
-            <PortalCard portal={portal} />
+            <PortalCard portal={portal} withBorders/>
           </div>
         ))}
       </div>

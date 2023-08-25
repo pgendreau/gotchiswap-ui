@@ -24,7 +24,7 @@
   }
 
   .asset-selected {
-    @apply bg-gradient-to-br from-gotchi-800  via-gotchi-500 to-g-yellow from-40% via-80% to-95%
+    @apply bg-gradient-to-br from-gotchi-900  via-gotchi-500 to-g-yellow from-40% via-80% to-95%
   }
 
   .asset {

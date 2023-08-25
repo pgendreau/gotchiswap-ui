@@ -1,5 +1,6 @@
 import { GetSaleResult, SaleItem, SelectableAsset, Wearable } from "@/types/types"
 import { TxStatus } from "./enums"
+import { PortalFieldsFragment, PortalStatus } from "@/graphql/core/__generated__/types"
 
 /**
  * @description Basic address shortener
@@ -151,4 +152,10 @@ export const isGetSaleResult = (result: any): result is GetSaleResult => {
   }
   if (!isAddressValid(result[9])) return false  
   return true  
+}
+
+export const getPortalImg = (portal: PortalFieldsFragment): string => {
+  debugger
+  const status = portal.status === PortalStatus.Bought ? 'closed' : 'open'
+  return `/images/h${portal.hauntId}_${status}.svg`
 }

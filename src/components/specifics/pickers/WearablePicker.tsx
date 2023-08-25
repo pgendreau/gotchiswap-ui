@@ -12,6 +12,7 @@ import { useAccount, useContractRead } from "wagmi";
 import { wearableAbi } from "@/abis/wearables";
 import { WearableCard } from "../cards/WearableCard";
 import { CartContext } from "@/contexts/CartContext";
+import { SectionTitle } from "@/components/generics/section/SectionTitle";
 
 export const WearablePicker = (props: PickerProps) => {
   const cartCtx = useContext(CartContext);
@@ -129,9 +130,9 @@ export const WearablePicker = (props: PickerProps) => {
   return (
     <>
       {!!wearables.length && (
-        <div className="lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white pb-10 pl-5">
+        <SectionTitle>
           {"wearAbles R V"}
-        </div>
+        </SectionTitle>
       )}
       <div className="flex flex-row flex-wrap justify-center gap-5">
         {wearables.map((wearable) => (
