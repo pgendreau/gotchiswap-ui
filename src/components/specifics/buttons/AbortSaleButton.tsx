@@ -1,43 +1,51 @@
-import { escrowAbi } from "@/abis/escrow";
-import { TxContext } from "@/contexts/TxContext";
-import { convertAddressType } from "@/helpers/tools";
-import { SaleWithAsset } from "@/types/types";
-import { useContext, useEffect } from "react";
-import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import { gotchiswapAbi } from "@/abis/gotchiswap-abi";
+import { TxStatus } from "@/helpers/enums";
+import { convertAddressType, createTxContext } from "@/helpers/tools";
+import { SaleV2, TxContextType } from "@/types/types";
+import { BaseError } from "viem";
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
+import { TxModal } from "../modals/tx/TxModal";
+import { useRouter } from "next/router";
 
-export const AbortSaleButton = (props: {sale: SaleWithAsset}) => {
-  const txContext = useContext(TxContext);
-
+export const AbortSaleButton = (props: { sale: SaleV2 }) => {
+  const router = useRouter();
   const abortTxData = usePrepareContractWrite({
-    address: convertAddressType(
-      process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS
-    ),
-    abi: escrowAbi,
-    functionName: "abortGotchiSale",
+    address: convertAddressType(process.env.NEXT_PUBLIC_OTC_CONTRACT_ADDRESS),
+    abi: gotchiswapAbi,
+    functionName: "abortSale",
     args: [props.sale.index],
     chainId: 137,
   });
-  
-  const abortTx = useContractWrite(abortTxData.config);
 
-  const waitForTx = useWaitForTransaction({
-    hash: abortTx.data?.hash,
+  const txWriteData = useContractWrite(abortTxData.config);
+
+  const txWaitData = useWaitForTransaction({
+    hash: txWriteData.data?.hash,
   });
+  
+  if (txWaitData.isSuccess) {
+    router.reload();
+  }
 
-  useEffect(() => {
-    console.log("waitForTx.status", waitForTx.status);
-    if (txContext?.setTxContextValue && abortTx.data?.hash) {
-      txContext?.setTxContextValue({
-        hash: abortTx.data?.hash,
-        operation: "Aborting OTC offer",
-        status: waitForTx.status,
-      });
-    }
-  }, [waitForTx.status, abortTx.data?.hash, txContext?.setTxContextValue]);
+  const txContext = createTxContext(
+    "Abort OTC Sale",
+    txWriteData.status,
+    txWaitData.status,
+    txWriteData.data?.hash,
+    txWriteData.error,
+    txWaitData.error
+  )
 
   return (
-    <button className="btn-base" onClick={ () => abortTx.write?.() }>
-      Abort Sale
-    </button>
+    <>
+      <button className="btn-base" onClick={() => txWriteData.write?.()}>
+        Abort Sale
+      </button>
+      <TxModal txContext={txContext} />
+    </>
   );
 };

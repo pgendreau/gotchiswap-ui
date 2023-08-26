@@ -25,6 +25,15 @@ module.exports = {
             '900': '#7e1176',
             '950': '#55004f',
         },
+        'light-pink': '#FFE8FF',
+        'off-black': '#1A0335',
+        'g-yellow': '#FEF87D',
+      },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+      },
+      listStyleType: {
+        none: 'disc',
       }
     },
   },

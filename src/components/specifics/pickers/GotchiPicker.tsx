@@ -1,58 +1,86 @@
 import {
   GotchiFieldsFragment,
-  GotchiQueryResult,
   useGotchisQuery,
 } from "@/graphql/core/__generated__/types";
-import { useGotchisSvgQuery } from "@/graphql/svg/__generated__/types";
+import { SvgFieldsFragment, useGotchisSvgQuery } from "@/graphql/svg/__generated__/types";
+import { Gotchi, PickerProps } from "@/types/types";
 import { classNames } from "@/helpers/tools";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useContext, useState } from "react";
 import { useAccount } from "wagmi";
 import { GotchiCard } from "../cards/GotchiCard";
-import { SelectableAsset } from "@/types/types";
+import { CartContext } from "@/contexts/CartContext";
+import { SectionTitle } from "@/components/generics/titles/SectionTitle";
 
-type GotchiPickerProps = {
-  selectedAsset: SelectableAsset | null;
-  setSelectedAsset: Dispatch<SetStateAction<SelectableAsset | null>>;
-  enablePicker: boolean;
-};
-
-export const GotchiPicker = (props: GotchiPickerProps) => {
+export const GotchiPicker = (props: PickerProps) => {
+  const cartCtx = useContext(CartContext);
   const address = useAccount().address?.toLowerCase() ?? "";
   const gotchis = useGotchisQuery({
     variables: { owner: address },
-    context: { clientName: "core" },    
+    context: { clientName: "core" },
     pollInterval: 6000,
   });
-  gotchis.refetch()
+  gotchis.refetch();
   const ids = gotchis.data?.aavegotchis?.map((gotchi) => gotchi?.id);
   const svgs = useGotchisSvgQuery({
     variables: { ids: ids },
     context: { clientName: "svg" },
     pollInterval: 6000,
+    onCompleted(data) {
+      const gTmp: Gotchi[] = data?.aavegotchis?.map((gotchi) => {
+        const gotchiData: GotchiFieldsFragment = gotchis.data?.aavegotchis?.find(g => g?.id === gotchi?.id) as GotchiFieldsFragment;
+        return {
+          ...gotchiData,
+          svg: data.aavegotchis?.find((svg) => svg?.id === gotchi?.id) as SvgFieldsFragment,
+        };
+      });
+      setGotchisWithSvg(gTmp);
+    },
   });
+
+  const [gotchisWithSvg, setGotchisWithSvg] = useState<Gotchi[]>([]);
+
+
+
+  const handlePickerClick = (gotchi: Gotchi) => {
+    if (props.enablePicker) {
+      // If the asset is already in the array we will remove it
+      // Otherwise we will add it
+      if (cartCtx.assets.find((asset) => asset.id === gotchi.id)) {
+        cartCtx.setAssets(
+          cartCtx.assets.filter((asset) => asset.id !== gotchi.id)
+        );
+      } else {
+        const newArray = [...cartCtx.assets];
+        newArray.push(gotchi);
+        cartCtx.setAssets(newArray);
+      }
+    }
+  };
 
   return (
     <>
-      { !!gotchis.data?.aavegotchis.length &&  <div className="lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white p-10">
-        {"G gotchis G"}
-      </div>}
+      {!!gotchis.data?.aavegotchis.length && (
+        <SectionTitle>
+         {"gotchis G"}
+        </SectionTitle>
+      )}
       <div className="flex flex-row flex-wrap justify-center gap-5">
-        {gotchis.data?.aavegotchis.map((gotchi) => (
+        {gotchisWithSvg.map((gotchi) => (
           <div
             id={gotchi.id}
             key={gotchi.id}
-            onClick={() => props.enablePicker && props.setSelectedAsset(gotchi)}
+            onClick={() => handlePickerClick(gotchi)}
             className={classNames(
-              props.selectedAsset?.id === gotchi.id
-                ? "bg-gotchi-500"
-                : "bg-purple-800"
+              cartCtx.assets.find(
+                (asset) =>
+                  asset?.id === gotchi.id && asset.__typename === "Aavegotchi"
+              )
+                ? "asset-selected"
+                : "asset"
             )}
           >
             <GotchiCard
               gotchi={gotchi}
-              svg={svgs.data?.aavegotchis?.find(
-                (svg) => svg?.id === gotchi?.id
-              )}
               withBorders
             />
           </div>

@@ -1,22 +1,34 @@
 import { PortalFieldsFragment } from "@/graphql/core/__generated__/types";
+import { classNames, getPortalImg } from "@/helpers/tools";
 import Image from "next/image";
 
-export const PortalCard = (props: { portal: PortalFieldsFragment }) => {
+type PortalCardProps = {
+  portal: PortalFieldsFragment;
+  withBorders?: boolean | undefined;
+  withBackground?: boolean | undefined;
+};
+
+export const PortalCard = ({
+  portal,
+  withBorders = false,
+  withBackground = false,
+}: PortalCardProps) => {
   return (
-    <>
-      <Image
-        src={
-          props.portal.hauntId === 1
-            ? "/images/h1_closed.avif"
-            : "/images/h2_closed.avif"
-        }
-        width={120}
-        height={120}
-        alt="portal pic"
-      />
+    <div
+      className={classNames(
+        withBorders ? "p-3" : "",
+        withBackground ? "asset" : "",
+        "w-24 md:w-36 flex flex-col place-items-center place-self-start gap-y-2"
+      )}
+    >
       <div className="font-kanit text-sm text-center">
-        {`H${props.portal.hauntId} Portal (${props.portal.id})`}
+        {`H${portal.hauntId} Portal (${portal.id})`}
       </div>
-    </>
+      <Image src={getPortalImg(portal)} height={120} width={120} alt="portal pic" />
+
+      <div className="text-xs text-center">
+        {portal.status === "Bought" ? "Closed portal" : "Open portal"}
+      </div>
+    </div>
   );
 };

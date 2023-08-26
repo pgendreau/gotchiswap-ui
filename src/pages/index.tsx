@@ -1,21 +1,13 @@
+import ClientOnly from "@/components/generics/nextShit/ClientOnly";
 import { useGotchisQuery } from "@/graphql/core/__generated__/types";
 import { useGotchisSvgQuery } from "@/graphql/svg/__generated__/types";
 import Link from "next/link";
 
 const Home = () => {
-  // const gotchi = useGotchiQuery({ variables: { id: "24091" } });
-  const gotchis = useGotchisQuery({
-    variables: { owner: "0x1a08b4d6497fa6d5970bd8f6c72bc5fbc8dd500e" },
-    context: { clientName: "core" },
-  });
-  const ids = gotchis.data?.aavegotchis?.map((gotchi) => gotchi?.id);
-  const svgs = useGotchisSvgQuery({
-    variables: { ids: ids },
-    context: { clientName: "svg" },
-  });
-  console.log(svgs.data?.aavegotchis);
+  
   return (
-    <>
+    <ClientOnly>
+      
       <div className="font-katin font-medium text-2xl">
         <p>Hello & Welcome to Gotchiswap frens!</p>
         <p>Gotchiswap is an OTC trading platform for Aavegotchis.</p>
@@ -24,6 +16,7 @@ const Home = () => {
           Its goal is to provide a non custodial, trustless way for individuals
           to trade assets in an OTC fashion
         </p>
+        <p>For now this is still an early version, use at your own risk !</p>
       </div>
 
       <div className="flex flex-row justify-center gap-x-10 pt-10">
@@ -40,7 +33,7 @@ const Home = () => {
           See my deals
         </Link>
       </div>
-    </>
+    </ClientOnly>
   );
 };
 

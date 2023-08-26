@@ -1,33 +1,32 @@
-import { GotchiFieldsFragment } from "@/graphql/core/__generated__/types";
-import { SvgFieldsFragment } from "@/graphql/svg/__generated__/types";
 import { classNames } from "@/helpers/tools";
+import { Gotchi } from "@/types/types";
 
 type GotchiCardProps = {
-  gotchi: GotchiFieldsFragment;
-  svg: SvgFieldsFragment | undefined;
+  gotchi: Gotchi;
   withBorders?: boolean | undefined;
+  withBackground?: boolean | undefined;
 };
 
 export const GotchiCard = ({
   gotchi,
-  svg,
   withBorders = false,
+  withBackground = false,
 }: GotchiCardProps) => {
   return (
     <div
       className={classNames(
-        withBorders ? "p-3" : "",
+        withBorders ? "p-3" : "", withBackground ? 'asset' : "",
         "flex flex-col"
       )}
     >
       <div className="font-kanit text-sm text-center">
         {`${gotchi?.name} (${gotchi?.modifiedRarityScore})`}{" "}
       </div>
-      {!!svg && (
+      {!!gotchi.svg && (
         <div
-          className="w-40 h-40"
+          className="md:w-40 md:h-40 w-30"
           dangerouslySetInnerHTML={{
-            __html: svg?.svg ?? "empty",
+            __html: gotchi.svg?.svg ?? "empty",
           }}
         />
       )}
@@ -41,12 +40,12 @@ export const GotchiCard = ({
           <div className="w-1/2">{`AGG ${gotchi?.modifiedNumericTraits[1]}`}</div>
         </div>
         <div className="flex flex-row place-items-center justify-center mt-1">
-          <div className="w-1/2">{`SPK ${gotchi?.modifiedNumericTraits[0]}`}</div>
-          <div className="w-1/2">{`BRN ${gotchi?.modifiedNumericTraits[1]}`}</div>
+          <div className="w-1/2">{`SPK ${gotchi?.modifiedNumericTraits[2]}`}</div>
+          <div className="w-1/2">{`BRN ${gotchi?.modifiedNumericTraits[3]}`}</div>
         </div>
         <div className="flex flex-row place-items-center justify-center mt-1">
-          <div className="w-1/2">{`EYS ${gotchi?.modifiedNumericTraits[0]}`}</div>
-          <div className="w-1/2">{`EYC ${gotchi?.modifiedNumericTraits[1]}`}</div>
+          <div className="w-1/2">{`EYS ${gotchi?.modifiedNumericTraits[4]}`}</div>
+          <div className="w-1/2">{`EYC ${gotchi?.modifiedNumericTraits[5]}`}</div>
         </div>
       </div>
     </div>

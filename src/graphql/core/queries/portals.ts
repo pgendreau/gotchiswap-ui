@@ -5,7 +5,7 @@ export const GET_PORTALS = gql`
 ${PORTAL_FIELDS}
 query portals($owner: String!){
 	portals(where:{
-    buyer: $owner
+    owner: $owner
     openedAt: null
   }) {    
     ...PortalFields
