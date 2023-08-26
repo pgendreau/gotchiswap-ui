@@ -1,4 +1,4 @@
-import { SectionTitle } from "@/components/generics/section/SectionTitle";
+import { SectionTitle } from "@/components/generics/titles/SectionTitle";
 import { CartContext } from "@/contexts/CartContext";
 import { Dispatch, SetStateAction, useContext } from "react";
 import { BaseCard } from "../cards/mini/BaseCard";

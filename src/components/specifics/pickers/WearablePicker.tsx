@@ -12,7 +12,7 @@ import { useAccount, useContractRead } from "wagmi";
 import { wearableAbi } from "@/abis/wearables";
 import { WearableCard } from "../cards/WearableCard";
 import { CartContext } from "@/contexts/CartContext";
-import { SectionTitle } from "@/components/generics/section/SectionTitle";
+import { SectionTitle } from "@/components/generics/titles/SectionTitle";
 
 export const WearablePicker = (props: PickerProps) => {
   const cartCtx = useContext(CartContext);

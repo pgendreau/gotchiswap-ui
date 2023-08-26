@@ -34,4 +34,14 @@
   .section-title {
     @apply lg:text-4xl md:text-3xl text-2xl font-gotchi font-medium text-white  pb-5
   }
+
+  .page-title {
+    @apply lg:text-6xl md:text-4xl text-3xl font-gotchi font-medium text-white  pb-5
+  }
+
+  ol, ul, menu {
+    padding-left: 20px !important;
+    list-style: disc !important;
+    margin: 0 !important;
+  }
 }

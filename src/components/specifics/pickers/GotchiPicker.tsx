@@ -9,7 +9,7 @@ import { useContext, useState } from "react";
 import { useAccount } from "wagmi";
 import { GotchiCard } from "../cards/GotchiCard";
 import { CartContext } from "@/contexts/CartContext";
-import { SectionTitle } from "@/components/generics/section/SectionTitle";
+import { SectionTitle } from "@/components/generics/titles/SectionTitle";
 
 export const GotchiPicker = (props: PickerProps) => {
   const cartCtx = useContext(CartContext);

@@ -74,3 +74,8 @@ export const txContextDefaultValue: TxContextType = {
 // Gotchiswap getSale return type 
 // We need it to type guard the result of the multicall
 export type GetSaleResult = readonly [bigint, readonly number[], readonly `0x${string}`[], readonly bigint[], readonly bigint[], readonly number[], readonly `0x${string}`[], readonly bigint[], readonly bigint[], `0x${string}`]
+
+export type qaItem = {
+  q: string,
+  a: string
+}

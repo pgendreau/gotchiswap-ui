@@ -8,7 +8,7 @@ import { useAccount } from "wagmi";
 import { PortalCard } from "../cards/PortalCard";
 import { useContext } from "react";
 import { CartContext } from "@/contexts/CartContext";
-import { SectionTitle } from "@/components/generics/section/SectionTitle";
+import { SectionTitle } from "@/components/generics/titles/SectionTitle";
 
 export const PortalPicker = (props: PickerProps) => {
   const cartCtx = useContext(CartContext);

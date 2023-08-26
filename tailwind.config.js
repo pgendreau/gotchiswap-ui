@@ -31,6 +31,9 @@ module.exports = {
       },
       animation: {
         'spin-slow': 'spin 3s linear infinite',
+      },
+      listStyleType: {
+        none: 'disc',
       }
     },
   },
