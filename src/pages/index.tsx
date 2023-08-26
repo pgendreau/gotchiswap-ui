@@ -7,6 +7,7 @@ const Home = () => {
   
   return (
     <ClientOnly>
+      
       <div className="font-katin font-medium text-2xl">
         <p>Hello & Welcome to Gotchiswap frens!</p>
         <p>Gotchiswap is an OTC trading platform for Aavegotchis.</p>

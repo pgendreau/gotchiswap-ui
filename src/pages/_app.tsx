@@ -8,6 +8,7 @@ import { TxContextProvider } from "@/contexts/TxContext";
 import { ModalContextProvider } from "@/contexts/ModalContext";
 import { CartContextProvider } from "@/contexts/CartContext";
 import { ConnectedCheck } from "@/components/hoc/wallet";
+import { Header } from "@/components/hoc/header";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -18,7 +19,9 @@ export default function App({ Component, pageProps }: AppProps) {
             <CartContextProvider>
               <TxContextProvider>
                 <ModalContextProvider>
-                  <Component {...pageProps} />
+                  <Header>
+                    <Component {...pageProps} />
+                  </Header>
                 </ModalContextProvider>
               </TxContextProvider>
             </CartContextProvider>
