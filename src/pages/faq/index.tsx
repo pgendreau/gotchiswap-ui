@@ -15,13 +15,19 @@ const faq = () => {
         </p>
       </div>
       <div className="flex flex-col gap-y-5 pt-5">
-      {qaArray.map((qa) => (
-        <div className="flex flex-col gap-y-2">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} className="text-gotchi-300">{qa.q}</ReactMarkdown>
-          <ReactMarkdown remarkPlugins={[remarkGfm]} className="!list-disc">{qa.a}</ReactMarkdown>
-        </div>
-      ))
-      }
+        {qaArray.map((qa, index) => (
+          <div key={index} className="flex flex-col gap-y-2">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              className="text-gotchi-300"
+            >
+              {qa.q}
+            </ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]} className="!list-disc">
+              {qa.a}
+            </ReactMarkdown>
+          </div>
+        ))}
       </div>
     </ClientOnly>
   );
