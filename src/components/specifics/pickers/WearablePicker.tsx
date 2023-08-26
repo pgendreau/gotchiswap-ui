@@ -18,9 +18,10 @@ export const WearablePicker = (props: PickerProps) => {
   const cartCtx = useContext(CartContext);
   const { address, isConnected } = useAccount();
   const [wearables, setWearables] = useState<Wearable[]>([]);
-  const wearableIds = [..._.range(1, 315), ..._.range(350, 369)];
+  const wearableIds = [..._.range(1, 316), ..._.range(350, 370)];
   const addressArray = Array(wearableIds.length).fill(address);
   const originalWearables: Wearable[] = [];
+
   const { data, isSuccess, isError, status } = useContractRead({
     address: convertAddressType(
       process.env.NEXT_PUBLIC_WEARABLE_CONTRACT_ADDRESS
@@ -31,7 +32,7 @@ export const WearablePicker = (props: PickerProps) => {
     onSuccess(data) {
       if (data && Array.isArray(data) && data.length === wearableIds.length) {
         const availableWearables = data
-          .map((v, i) => [i + 1, parseInt(v)])
+          .map((v, i) => [wearableIds[i], parseInt(v)])
           .filter((d) => d[1])
           .map((i): Wearable => {
             return {

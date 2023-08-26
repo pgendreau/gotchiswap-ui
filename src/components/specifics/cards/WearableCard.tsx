@@ -21,12 +21,10 @@ export const WearableCard = ({
       )}
     >
       <div className="text-center text-sm">{wearable?.name}</div>
-      <Image
+      <img
         src={wearable.uri}
-        width={120}
-        height={120}
         alt={wearable.name}
-        className="w-20 h-20 my-2"
+        className='object-contain object-center w-24 h-24 p-2'
       />
       <div className="text-center text-xs">
         {`qty: ${wearable?.qty}`}

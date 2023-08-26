@@ -10,7 +10,7 @@ export const WearableCard = (props: { asset: Wearable }) => {
         width={60}
         height={60}
         alt={props.asset.name}
-        className="w-20 h-20 p-2"
+        className='object-contain object-center w-20 h-20 p-2'
       />
       <div className="text-center">{`x ${props.asset?.qty}`}</div>
     </>
